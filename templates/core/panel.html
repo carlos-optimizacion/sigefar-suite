@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}Panel interno | SIGEFAR Suite{% endblock %}
+
+{% block content %}
+<section class="panel-hero">
+    <div>
+        <p class="eyebrow">Panel interno</p>
+        <h1>Centro de trabajo regulatorio</h1>
+        <p class="hero-text">Vista operativa para seguimiento de registros, documentos, desviaciones, CAPA, lotes BPA, incidentes BPDT y casos BPFV.</p>
+    </div>
+    <div class="panel-user-card">
+        <span>Usuario activo</span>
+        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+        {% if empresa %}
+        <small>{{ empresa.razon_social }}</small>
+        {% else %}
+        <small>Sin empresa asociada</small>
+        {% endif %}
+    </div>
+</section>
+
+<section class="panel-section">
+    <div class="panel-section-head">
+        <div>
+            <p class="eyebrow">Resumen de registros</p>
+            <h2>Estado general del sistema</h2>
+        </div>
+        <a class="panel-admin-link" href="/admin/">Administración avanzada</a>
+    </div>
+
+    <div class="panel-summary-grid">
+        {% for item in resumen %}
+        <a class="panel-summary-card" href="{{ item.url }}">
+            <span>{{ item.codigo }}</span>
+            <strong>{{ item.valor }}</strong>
+            <h3>{{ item.titulo }}</h3>
+            <p>{{ item.detalle }}</p>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel-section">
+    <div class="panel-section-head">
+        <div>
+            <p class="eyebrow">Flujos de trabajo</p>
+            <h2>Accesos por módulo</h2>
+        </div>
+    </div>
+
+    <div class="workstream-grid">
+        {% for item in workstreams %}
+        <article class="workstream-card">
+            <div class="workstream-topline">
+                <span>{{ item.codigo }}</span>
+                <a href="{{ item.url }}">Abrir módulo</a>
+            </div>
+            <h3>{{ item.titulo }}</h3>
+            <p>{{ item.descripcion }}</p>
+            <ul>
+                {% for registro in item.registros %}
+                <li>{{ registro }}</li>
+                {% endfor %}
+            </ul>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="panel-section two-columns">
+    <article class="control-panel-card">
+        <p class="eyebrow">Licenciamiento</p>
+        <h2>Módulos habilitados</h2>
+        {% if licencias %}
+        <div class="license-list">
+            {% for licencia in licencias %}
+            <div>
+                <strong>{{ licencia.modulo.codigo }}</strong>
+                <span>{{ licencia.modulo.nombre }}</span>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <p class="muted">No hay licencias activas asociadas a la empresa del usuario o todavía no se configuró empresa.</p>
+        {% endif %}
+    </article>
+
+    <article class="control-panel-card accent">
+        <p class="eyebrow">Gobierno del sistema</p>
+        <h2>Regla operativa</h2>
+        <p>Las desviaciones, hallazgos, incidentes y señales pueden originarse desde BPA, BPDT o BPFV, pero la gestión de CAPA pertenece a QMS / Calidad.</p>
+        <a class="text-link" href="/modulos/qms/">Ver criterio QMS</a>
+    </article>
+</section>
+{% endblock %}
