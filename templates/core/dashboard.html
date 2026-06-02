@@ -3,66 +3,66 @@
 {% block title %}Inicio | SIGEFAR Suite{% endblock %}
 
 {% block content %}
-<section class="hero">
-    <div class="hero-copy">
-        <p class="eyebrow">Sistema Integral de Gestión de Calidad, Buenas Prácticas y Farmacovigilancia</p>
+<section class="suite-hero">
+    <div class="suite-hero-copy">
+        <p class="eyebrow">Regulatory Tech Suite</p>
         <h1>SIGEFAR Suite</h1>
-        <p class="hero-lead">Plataforma integral para gestión de calidad, cumplimiento regulatorio, buenas prácticas y farmacovigilancia.</p>
-        <p class="hero-text">Centraliza documentos, evidencias, hallazgos, auditorías, condiciones regulatorias, lotes controlados y casos de farmacovigilancia bajo una arquitectura trazable, segura y modular.</p>
-        <div class="actions">
-            <a class="btn primary" href="#modulos">Ver módulos</a>
-            <a class="btn secondary" href="/admin/">Ingresar al sistema</a>
+        <p class="suite-lead">Plataforma integral para calidad, cumplimiento regulatorio, buenas prácticas y farmacovigilancia.</p>
+        <p class="suite-text">Integra documentos, evidencias, auditorías, desviaciones, CAPA, lotes BPA, incidentes BPDT y casos BPFV bajo una arquitectura modular, trazable y gobernada por calidad.</p>
+
+        <div class="suite-actions">
+            <a class="suite-btn primary" href="/panel/">Ingresar al sistema</a>
+            <a class="suite-btn secondary" href="#modulos">Explorar módulos</a>
+        </div>
+
+        <div class="suite-badges">
+            <span>Core común</span>
+            <span>QMS rector</span>
+            <span>BPA regulatorio</span>
+            <span>BPDT regulatorio</span>
+            <span>BPFV</span>
         </div>
     </div>
-    <div class="hero-visual" aria-label="Representación visual de cumplimiento regulatorio">
-        <div class="orbit-card card-one">
-            <span>QMS</span>
-            <strong>Gobierno de calidad</strong>
-        </div>
-        <div class="orbit-card card-two">
-            <span>BPA</span>
-            <strong>Almacenamiento regulado</strong>
-        </div>
-        <div class="orbit-card card-three">
-            <span>BPFV</span>
-            <strong>Farmacovigilancia</strong>
-        </div>
-        <div class="visual-core">
-            <span>Core</span>
-            <strong>Trazabilidad</strong>
-        </div>
+
+    <div class="suite-hero-visual">
+        <div class="suite-orbit-center">SIGEFAR</div>
+        <div class="suite-node suite-node-core">Core</div>
+        <div class="suite-node suite-node-qms">QMS</div>
+        <div class="suite-node suite-node-bpa">BPA</div>
+        <div class="suite-node suite-node-bpdt">BPDT</div>
+        <div class="suite-node suite-node-bpfv">BPFV</div>
     </div>
 </section>
 
-<section class="section-heading" id="modulos">
+<section class="suite-section-head" id="modulos">
     <div>
         <p class="eyebrow">Arquitectura funcional</p>
         <h2>Módulos principales</h2>
     </div>
-    <p>Una suite integrada donde cada módulo tiene un alcance regulatorio claro, sin duplicar documentos, CAPA ni datos maestros.</p>
+    <p>Una suite integrada con gobierno transversal de calidad, sin duplicar CAPA, documentos, productos ni datos regulatorios críticos.</p>
 </section>
 
-<section class="featured-module">
-    <div class="module-symbol">{{ qms_module.icono }}</div>
+<section class="qms-feature-card">
+    <div class="qms-feature-icon">{{ qms_module.icono }}</div>
     <div>
-        <span class="module-label">{{ qms_module.etiqueta }}</span>
+        <span class="suite-chip qms">{{ qms_module.etiqueta }}</span>
         <h3>{{ qms_module.nombre }}</h3>
         <p>{{ qms_module.descripcion }}</p>
-        <div class="chip-list">
+        <div class="suite-chip-list">
             {% for componente in qms_module.componentes %}
             <span>{{ componente }}</span>
             {% endfor %}
         </div>
-        <a class="text-link" href="/modulos/{{ qms_module.slug }}/">Ver módulo de Calidad</a>
+        <a class="suite-link" href="/modulos/{{ qms_module.slug }}/">Ver módulo rector de Calidad</a>
     </div>
 </section>
 
-<section class="module-grid">
+<section class="suite-module-grid">
     {% for modulo in secondary_modules %}
-    <article class="module-card">
-        <div class="module-card-head">
-            <div class="module-icon">{{ modulo.icono }}</div>
-            <span>{{ modulo.etiqueta }}</span>
+    <article class="suite-module-card suite-{{ modulo.slug }}">
+        <div class="suite-module-topline">
+            <div class="suite-module-icon">{{ modulo.icono }}</div>
+            <span>{{ modulo.codigo }}</span>
         </div>
         <h3>{{ modulo.nombre }}</h3>
         <p>{{ modulo.descripcion }}</p>
@@ -71,39 +71,39 @@
             <li>{{ componente }}</li>
             {% endfor %}
         </ul>
-        <a class="card-link" href="/modulos/{{ modulo.slug }}/">Explorar módulo</a>
+        <a href="/modulos/{{ modulo.slug }}/">Explorar módulo</a>
     </article>
     {% endfor %}
 </section>
 
-<section class="flow-section">
-    <div class="section-heading compact">
+<section class="compliance-flow-premium">
+    <div class="suite-section-head compact">
         <div>
             <p class="eyebrow">Gobierno transversal</p>
-            <h2>Flujo de cumplimiento</h2>
+            <h2>Flujo regulatorio integrado</h2>
         </div>
-        <p>Los módulos operan integrados, pero la gestión de calidad, CAPA, documentos, auditorías y mejora continua se gobierna desde QMS.</p>
+        <p>Core sostiene datos comunes, QMS gobierna calidad y los módulos especializados ejecutan controles regulatorios sin convertirse en ERP, WMS ni TMS.</p>
     </div>
-    <div class="flow-line">
+    <div class="flow-premium-grid">
         {% for step in flow_steps %}
-        <div class="flow-step">
-            <span>{{ forloop.counter }}</span>
+        <div class="flow-premium-step">
+            <span>{{ forloop.counter|stringformat:"02d" }}</span>
             <strong>{{ step }}</strong>
         </div>
         {% endfor %}
     </div>
 </section>
 
-<section class="principles-section">
-    <div class="section-heading compact">
+<section class="principles-premium">
+    <div class="suite-section-head compact">
         <div>
             <p class="eyebrow">Principios del sistema</p>
             <h2>Base de control regulatorio</h2>
         </div>
     </div>
-    <div class="principle-grid">
+    <div class="principles-premium-grid">
         {% for principle in principles %}
-        <article class="principle-card">
+        <article>
             <span>{{ principle.icono }}</span>
             <h3>{{ principle.titulo }}</h3>
             <p>{{ principle.descripcion }}</p>
