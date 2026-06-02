@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}SIGEFAR Suite{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'core/css/sigefar.css' %}">
+</head>
+<body>
+    <div class="layout">
+        <aside class="sidebar">
+            <div class="brand">
+                <div class="brand-mark">S</div>
+                <div>
+                    <h1>SIGEFAR</h1>
+                    <span>Suite Regulatoria</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <a class="nav-item active" href="/">Dashboard</a>
+                <a class="nav-item" href="/admin/core/producto/">Productos</a>
+                <a class="nav-item" href="/admin/qms/documentocontrolado/">Documentos QMS</a>
+                <a class="nav-item" href="/admin/bpa/lotebpa/">Lotes BPA</a>
+                <a class="nav-item" href="/admin/bpfv/casofarmacovigilancia/">BPFV</a>
+                <a class="nav-item" href="/admin/">Admin Django</a>
+            </nav>
+            <div class="sidebar-footer">
+                <span>Monolito modular</span>
+                <strong>Django + PostgreSQL</strong>
+            </div>
+        </aside>
+        <main class="main">
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+</body>
+</html>
