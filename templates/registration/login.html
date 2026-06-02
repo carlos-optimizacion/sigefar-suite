@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}Ingresar | SIGEFAR Suite{% endblock %}
+
+{% block content %}
+<section class="login-shell">
+    <div class="login-copy">
+        <p class="eyebrow">Acceso seguro</p>
+        <h1>Ingresar a SIGEFAR Suite</h1>
+        <p>Accede al panel interno para gestionar calidad, documentos, desviaciones, CAPA, almacenamiento regulatorio, transporte regulatorio y farmacovigilancia según tus permisos.</p>
+        <div class="login-principles">
+            <span>Seguridad por roles</span>
+            <span>Trazabilidad</span>
+            <span>Evidencia regulatoria</span>
+        </div>
+    </div>
+
+    <form class="login-card" method="post">
+        {% csrf_token %}
+        <h2>Inicio de sesión</h2>
+        {% if form.errors %}
+        <div class="form-alert">Usuario o contraseña no válidos. Verifica tus credenciales.</div>
+        {% endif %}
+        <label for="id_username">Usuario</label>
+        {{ form.username }}
+        <label for="id_password">Contraseña</label>
+        {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}">
+        <button type="submit">Ingresar al panel</button>
+        <a class="login-admin" href="/admin/">Administración avanzada</a>
+    </form>
+</section>
+{% endblock %}
