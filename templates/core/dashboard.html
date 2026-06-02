@@ -7,27 +7,27 @@
     <div class="suite-hero-copy">
         <p class="eyebrow">Regulatory Tech Suite</p>
         <h1>SIGEFAR Suite</h1>
-        <p class="suite-lead">Plataforma integral para calidad, cumplimiento regulatorio, buenas prácticas y farmacovigilancia.</p>
-        <p class="suite-text">Integra documentos, evidencias, auditorías, desviaciones, CAPA, lotes BPA, incidentes BPDT y casos BPFV bajo una arquitectura modular, trazable y gobernada por calidad.</p>
+        <p class="suite-lead">Plataforma integral para cumplimiento regulatorio, calidad, buenas prácticas y farmacovigilancia.</p>
+        <p class="suite-text">Integra Regulatorio, Calidad, BPA, BPDT y BPFV bajo una arquitectura modular, trazable y gobernada por calidad.</p>
 
         <div class="suite-actions">
             <a class="suite-btn primary" href="/panel/">Ingresar al sistema</a>
-            <a class="suite-btn secondary" href="#modulos">Explorar módulos</a>
+            <a class="suite-btn secondary" href="#modulos">Ver módulos activos</a>
         </div>
 
         <div class="suite-badges">
-            <span>Core común</span>
-            <span>QMS rector</span>
-            <span>BPA regulatorio</span>
-            <span>BPDT regulatorio</span>
+            <span>Regulatorio</span>
+            <span>Calidad</span>
+            <span>BPA</span>
+            <span>BPDT</span>
             <span>BPFV</span>
         </div>
     </div>
 
     <div class="suite-hero-visual">
         <div class="suite-orbit-center">SIGEFAR</div>
-        <div class="suite-node suite-node-core">Core</div>
-        <div class="suite-node suite-node-qms">QMS</div>
+        <div class="suite-node suite-node-core">Regulatorio</div>
+        <div class="suite-node suite-node-qms">Calidad</div>
         <div class="suite-node suite-node-bpa">BPA</div>
         <div class="suite-node suite-node-bpdt">BPDT</div>
         <div class="suite-node suite-node-bpfv">BPFV</div>
@@ -37,43 +37,43 @@
 <section class="suite-section-head" id="modulos">
     <div>
         <p class="eyebrow">Arquitectura funcional</p>
-        <h2>Módulos principales</h2>
+        <h2>5 módulos principales</h2>
     </div>
-    <p>Una suite integrada con gobierno transversal de calidad, sin duplicar CAPA, documentos, productos ni datos regulatorios críticos.</p>
+    <p>La suite se organiza en Regulatorio, Calidad, BPA, BPDT y BPFV. Cada módulo tiene alcance definido para evitar duplicidad funcional.</p>
 </section>
 
-<section class="qms-feature-card">
-    <div class="qms-feature-icon">{{ qms_module.icono }}</div>
-    <div>
-        <span class="suite-chip qms">{{ qms_module.etiqueta }}</span>
-        <h3>{{ qms_module.nombre }}</h3>
-        <p>{{ qms_module.descripcion }}</p>
-        <div class="suite-chip-list">
-            {% for componente in qms_module.componentes %}
-            <span>{{ componente }}</span>
-            {% endfor %}
-        </div>
-        <a class="suite-link" href="/modulos/{{ qms_module.slug }}/">Ver módulo rector de Calidad</a>
-    </div>
-</section>
-
-<section class="suite-module-grid">
+<section class="suite-module-grid main-five-grid">
     {% for modulo in secondary_modules %}
     <article class="suite-module-card suite-{{ modulo.slug }}">
         <div class="suite-module-topline">
             <div class="suite-module-icon">{{ modulo.icono }}</div>
-            <span>{{ modulo.codigo }}</span>
+            <span>{% if modulo.slug == 'core' %}REG{% else %}{{ modulo.codigo }}{% endif %}</span>
         </div>
-        <h3>{{ modulo.nombre }}</h3>
-        <p>{{ modulo.descripcion }}</p>
+        <h3>{% if modulo.slug == 'core' %}SIGEFAR-Regulatorio{% else %}{{ modulo.nombre }}{% endif %}</h3>
+        <p>{% if modulo.slug == 'core' %}Núcleo común de usuarios, roles, permisos, productos, bitácora, licenciamiento, seguridad y trazabilidad transversal.{% else %}{{ modulo.descripcion }}{% endif %}</p>
         <ul>
             {% for componente in modulo.componentes|slice:":5" %}
             <li>{{ componente }}</li>
             {% endfor %}
         </ul>
-        <a href="/modulos/{{ modulo.slug }}/">Explorar módulo</a>
+        <a href="/modulos/{{ modulo.slug }}/">Abrir módulo</a>
     </article>
     {% endfor %}
+
+    <article class="suite-module-card suite-qms featured-five-card">
+        <div class="suite-module-topline">
+            <div class="suite-module-icon">{{ qms_module.icono }}</div>
+            <span>QMS</span>
+        </div>
+        <h3>SIGEFAR-Calidad</h3>
+        <p>{{ qms_module.descripcion }}</p>
+        <ul>
+            {% for componente in qms_module.componentes|slice:":5" %}
+            <li>{{ componente }}</li>
+            {% endfor %}
+        </ul>
+        <a href="/modulos/{{ qms_module.slug }}/">Abrir módulo rector</a>
+    </article>
 </section>
 
 <section class="compliance-flow-premium">
@@ -82,7 +82,7 @@
             <p class="eyebrow">Gobierno transversal</p>
             <h2>Flujo regulatorio integrado</h2>
         </div>
-        <p>Core sostiene datos comunes, QMS gobierna calidad y los módulos especializados ejecutan controles regulatorios sin convertirse en ERP, WMS ni TMS.</p>
+        <p>Regulatorio sostiene datos comunes, Calidad gobierna documentos y CAPA, mientras BPA, BPDT y BPFV ejecutan controles regulatorios especializados.</p>
     </div>
     <div class="flow-premium-grid">
         {% for step in flow_steps %}
