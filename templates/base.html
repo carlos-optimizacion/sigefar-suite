@@ -6,37 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}SIGEFAR Suite{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'core/css/sigefar.css' %}">
-    <link rel="stylesheet" href="{% static 'core/css/sigefar_overrides.css' %}">
 </head>
 <body>
-    <div class="layout">
-        <aside class="sidebar">
-            <div class="brand">
-                <div class="brand-mark">S</div>
-                <div>
-                    <h1>SIGEFAR</h1>
-                    <span>Suite Regulatoria</span>
-                </div>
-            </div>
-            <nav class="nav">
-                <span class="nav-label">Plataforma</span>
-                <a class="nav-item active" href="/">Dashboard general</a>
+    <header class="topbar">
+        <a class="brand" href="/" aria-label="Ir al inicio de SIGEFAR Suite">
+            <span class="brand-mark">S</span>
+            <span>
+                <strong>SIGEFAR Suite</strong>
+                <small>Calidad · Cumplimiento · Farmacovigilancia</small>
+            </span>
+        </a>
+        <nav class="topnav" aria-label="Navegación principal">
+            <a href="/">Inicio</a>
+            <a href="/#modulos">Módulos</a>
+            <a href="/modulos/qms/">Calidad</a>
+            <a href="/modulos/bpfv/">BPFV</a>
+        </nav>
+        <a class="access-link" href="/admin/">Ingresar al sistema</a>
+    </header>
 
-                <span class="nav-label">Módulos principales</span>
-                <a class="nav-item" href="/admin/core/">SIGEFAR-Core</a>
-                <a class="nav-item" href="/admin/qms/">SIGEFAR-QMS / Calidad</a>
-                <a class="nav-item" href="/admin/bpa/">SIGEFAR-BPA</a>
-                <a class="nav-item" href="/admin/bpdt/">SIGEFAR-BPDT</a>
-                <a class="nav-item" href="/admin/bpfv/">SIGEFAR-BPFV</a>
-            </nav>
-            <div class="sidebar-footer">
-                <span>Suite modular</span>
-                <strong>Cumplimiento · Calidad · Evidencia · Auditoría</strong>
-            </div>
-        </aside>
-        <main class="main">
-            {% block content %}{% endblock %}
-        </main>
-    </div>
+    <main class="site-main">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div>
+            <strong>SIGEFAR Suite</strong>
+            <p>Plataforma modular para cumplimiento regulatorio, calidad, evidencia, auditoría y farmacovigilancia.</p>
+        </div>
+        <span>Core sostiene · QMS gobierna · Los módulos ejecutan</span>
+    </footer>
 </body>
 </html>
