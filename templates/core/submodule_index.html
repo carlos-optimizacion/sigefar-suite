@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}Submódulos {{ module.codigo }} | SIGEFAR Suite{% endblock %}
+{% block content %}
+<section class="module-premium-hero module-theme-{{ module.slug }}">
+    <a class="back-link-premium" href="/modulos/{{ module.slug }}/">← Volver al módulo</a>
+    <div class="module-premium-grid">
+        <div>
+            <p class="eyebrow">Submódulos funcionales</p>
+            <h1>{{ module.codigo }}</h1>
+            <p class="module-premium-lead">Herramientas internas de {{ module.nombre }}</p>
+            <p class="module-premium-text">Cada herramienta mantiene alcance regulatorio definido para evitar duplicidad con Core, QMS y otros módulos de SIGEFAR Suite.</p>
+        </div>
+        <div class="module-premium-emblem">
+            <span>{{ module.icono }}</span>
+            <strong>{{ module.codigo }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="submodule-section">
+    <div class="submodule-grid">
+        {% for submodule in submodules %}
+        <a class="submodule-card module-theme-border-{{ module.slug }}" href="/modulos/{{ module.slug }}/{{ submodule.slug }}/">
+            <span>{{ forloop.counter|stringformat:"02d" }}</span>
+            <h3>{{ submodule.nombre }}</h3>
+            <p>{{ submodule.descripcion }}</p>
+            <strong>Abrir herramienta</strong>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
