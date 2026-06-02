@@ -4,7 +4,7 @@ from django.contrib import admin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.urls import path
 
-from core.submodule_views import module_detail_with_submodules, submodule_detail
+from core.submodule_views import module_detail_with_submodules, submodule_detail, submodule_index
 from core.views import home, panel
 
 urlpatterns = [
@@ -13,6 +13,7 @@ urlpatterns = [
     path('logout/', LogoutView.as_view(), name='logout'),
     path('panel/', panel, name='panel'),
     path('modulos/<slug:slug>/', module_detail_with_submodules, name='module_detail'),
+    path('modulos/<slug:module_slug>/submodulos/', submodule_index, name='submodule_index'),
     path('modulos/<slug:module_slug>/<slug:submodule_slug>/', submodule_detail, name='submodule_detail'),
     path('admin/', admin.site.urls),
 ]
