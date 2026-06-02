@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ module.nombre }} | SIGEFAR Suite{% endblock %}
+
+{% block content %}
+<section class="module-hero">
+    <a class="back-link" href="/">← Volver a la home</a>
+    <div class="module-hero-grid">
+        <div>
+            <p class="eyebrow">{{ module.etiqueta }}</p>
+            <h1>{{ module.nombre }}</h1>
+            <p class="hero-lead">{{ module.titulo }}</p>
+            <p class="hero-text">{{ module.mensaje }}</p>
+        </div>
+        <div class="module-emblem">
+            <span>{{ module.icono }}</span>
+            <strong>{{ module.codigo }}</strong>
+        </div>
+    </div>
+</section>
+
+<section class="module-detail-grid">
+    <article class="detail-panel large">
+        <p class="eyebrow">Componentes funcionales</p>
+        <h2>Qué gestiona este módulo</h2>
+        <div class="detail-list">
+            {% for componente in module.componentes %}
+            <div>
+                <span>✓</span>
+                <strong>{{ componente }}</strong>
+            </div>
+            {% endfor %}
+        </div>
+    </article>
+
+    <article class="detail-panel">
+        <p class="eyebrow">Criterio de gobierno</p>
+        <h2>Reglas de control</h2>
+        <ul class="rule-list">
+            {% for principle in module.principios %}
+            <li>{{ principle }}</li>
+            {% endfor %}
+        </ul>
+    </article>
+</section>
+
+<section class="related-section">
+    <div class="section-heading compact">
+        <div>
+            <p class="eyebrow">Navegación modular</p>
+            <h2>Otros módulos de SIGEFAR Suite</h2>
+        </div>
+    </div>
+    <div class="related-grid">
+        {% for related in related_modules %}
+        <a class="related-card" href="/modulos/{{ related.slug }}/">
+            <span>{{ related.icono }}</span>
+            <strong>{{ related.nombre }}</strong>
+            <small>{{ related.titulo }}</small>
+        </a>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}
