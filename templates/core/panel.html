@@ -3,36 +3,64 @@
 {% block title %}Panel interno | SIGEFAR Suite{% endblock %}
 
 {% block content %}
-<section class="panel-hero">
-    <div>
-        <p class="eyebrow">Panel interno</p>
-        <h1>Centro de trabajo regulatorio</h1>
-        <p class="hero-text">Vista operativa para seguimiento de registros, documentos, desviaciones, CAPA, lotes BPA, incidentes BPDT y casos BPFV.</p>
+<section class="premium-hero">
+    <div class="premium-hero-copy">
+        <p class="eyebrow">Centro de control regulatorio</p>
+        <h1>Gestión integral de cumplimiento y calidad</h1>
+        <p class="hero-subtext">
+            Supervisa documentos, desviaciones, CAPA, lotes BPA, incidentes BPDT y casos BPFV desde una plataforma modular con trazabilidad, evidencia y control por roles.
+        </p>
+
+        <div class="module-badges">
+            <span class="badge badge-core">Core</span>
+            <span class="badge badge-qms">QMS</span>
+            <span class="badge badge-bpa">BPA</span>
+            <span class="badge badge-bpdt">BPDT</span>
+            <span class="badge badge-bpfv">BPFV</span>
+        </div>
+
+        <div class="hero-actions">
+            <a href="/admin/" class="hero-btn hero-btn-primary">Administración avanzada</a>
+            <a href="/modulos/qms/" class="hero-btn hero-btn-secondary">Ver módulo rector</a>
+        </div>
     </div>
-    <div class="panel-user-card">
-        <span>Usuario activo</span>
-        <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
-        {% if empresa %}
-        <small>{{ empresa.razon_social }}</small>
-        {% else %}
-        <small>Sin empresa asociada</small>
-        {% endif %}
+
+    <div class="premium-hero-side">
+        <div class="profile-card-premium">
+            <span>Usuario activo</span>
+            <strong>{{ request.user.get_full_name|default:request.user.username }}</strong>
+            {% if empresa %}
+            <small>{{ empresa.razon_social }}</small>
+            {% else %}
+            <small>Sin empresa asociada</small>
+            {% endif %}
+        </div>
+
+        <div class="system-orbit">
+            <div class="orbit-center">SIGEFAR</div>
+            <div class="orbit-node node-qms">QMS</div>
+            <div class="orbit-node node-bpa">BPA</div>
+            <div class="orbit-node node-bpfv">BPFV</div>
+        </div>
     </div>
 </section>
 
-<section class="panel-section">
-    <div class="panel-section-head">
+<section class="dashboard-section">
+    <div class="section-title-row">
         <div>
-            <p class="eyebrow">Resumen de registros</p>
+            <p class="eyebrow">Resumen ejecutivo</p>
             <h2>Estado general del sistema</h2>
         </div>
-        <a class="panel-admin-link" href="/admin/">Administración avanzada</a>
+        <a class="section-action" href="/admin/">Abrir administración</a>
     </div>
 
-    <div class="panel-summary-grid">
+    <div class="premium-summary-grid">
         {% for item in resumen %}
-        <a class="panel-summary-card" href="{{ item.url }}">
-            <span>{{ item.codigo }}</span>
+        <a class="premium-summary-card module-{{ item.codigo|lower }}" href="{{ item.url }}">
+            <div class="summary-topline">
+                <span>{{ item.codigo }}</span>
+                <em>Acceso rápido</em>
+            </div>
             <strong>{{ item.valor }}</strong>
             <h3>{{ item.titulo }}</h3>
             <p>{{ item.detalle }}</p>
@@ -41,18 +69,18 @@
     </div>
 </section>
 
-<section class="panel-section">
-    <div class="panel-section-head">
+<section class="dashboard-section">
+    <div class="section-title-row">
         <div>
-            <p class="eyebrow">Flujos de trabajo</p>
-            <h2>Accesos por módulo</h2>
+            <p class="eyebrow">Espacios de trabajo</p>
+            <h2>Módulos operativos</h2>
         </div>
     </div>
 
-    <div class="workstream-grid">
+    <div class="workspace-grid-premium">
         {% for item in workstreams %}
-        <article class="workstream-card">
-            <div class="workstream-topline">
+        <article class="workspace-card-premium ws-{{ item.codigo|lower }}">
+            <div class="workspace-topline-premium">
                 <span>{{ item.codigo }}</span>
                 <a href="{{ item.url }}">Abrir módulo</a>
             </div>
@@ -68,9 +96,27 @@
     </div>
 </section>
 
-<section class="panel-section two-columns">
-    <article class="control-panel-card">
-        <p class="eyebrow">Licenciamiento</p>
+<section class="governance-band-premium">
+    <article>
+        <span>01</span>
+        <strong>QMS gobierna CAPA</strong>
+        <p>Hallazgos, incidentes y señales pueden originarse en otros módulos, pero la gestión, seguimiento y cierre de CAPA pertenece a Calidad.</p>
+    </article>
+    <article>
+        <span>02</span>
+        <strong>BPA controla lotes regulatorios</strong>
+        <p>Los lotes no son dato maestro general. Se registran cuando requieren evidencia, revisión, liberación, bloqueo, rechazo o trazabilidad BPA.</p>
+    </article>
+    <article>
+        <span>03</span>
+        <strong>BPFV consulta sin modificar</strong>
+        <p>Farmacovigilancia puede buscar y vincular lotes BPA, pero no cambia estados regulatorios ni administra almacenamiento.</p>
+    </article>
+</section>
+
+<section class="license-premium-section">
+    <article class="license-premium-card">
+        <p class="eyebrow">Licenciamiento modular</p>
         <h2>Módulos habilitados</h2>
         {% if licencias %}
         <div class="license-list">
@@ -86,10 +132,10 @@
         {% endif %}
     </article>
 
-    <article class="control-panel-card accent">
+    <article class="license-premium-card dark">
         <p class="eyebrow">Gobierno del sistema</p>
         <h2>Regla operativa</h2>
-        <p>Las desviaciones, hallazgos, incidentes y señales pueden originarse desde BPA, BPDT o BPFV, pero la gestión de CAPA pertenece a QMS / Calidad.</p>
+        <p>Core sostiene la seguridad y los datos maestros. QMS gobierna calidad, documentos y CAPA. BPA, BPDT y BPFV ejecutan controles regulatorios especializados sin duplicar funciones.</p>
         <a class="text-link" href="/modulos/qms/">Ver criterio QMS</a>
     </article>
 </section>
