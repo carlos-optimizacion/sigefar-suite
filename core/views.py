@@ -1,4 +1,11 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render
+
+from bpa.models import ExcursionBPA, LoteBPA
+from bpdt.models import IncidenteTransporte, Transportista, VehiculoAutorizado
+from bpfv.models import CasoFarmacovigilancia
+from qms.models import CAPA, Desviacion, DocumentoControlado, RegistroSanitario
+from .models import LicenciaModulo, Producto
 
 
 MODULES = [
@@ -195,6 +202,119 @@ def module_detail(request, slug):
         {
             "module": selected_module,
             "related_modules": related_modules,
+        },
+    )
+
+
+@login_required
+def panel(request):
+    empresa = getattr(request.user, "empresa", None)
+    licencias = []
+    if empresa:
+        licencias = list(
+            LicenciaModulo.objects.select_related("modulo")
+            .filter(empresa=empresa, habilitado=True)
+            .order_by("modulo__codigo")
+        )
+
+    resumen = [
+        {
+            "codigo": "CORE",
+            "titulo": "Datos maestros",
+            "valor": Producto.objects.filter(activo=True).count(),
+            "detalle": "Productos activos registrados en Core",
+            "url": "/admin/core/producto/",
+        },
+        {
+            "codigo": "QMS",
+            "titulo": "Documentos vigentes",
+            "valor": DocumentoControlado.objects.filter(estado="VIGENTE", activo=True).count(),
+            "detalle": "Documentos controlados con estado vigente",
+            "url": "/admin/qms/documentocontrolado/",
+        },
+        {
+            "codigo": "QMS",
+            "titulo": "Desviaciones abiertas",
+            "valor": Desviacion.objects.exclude(estado="CERRADA").filter(activo=True).count(),
+            "detalle": "Desviaciones pendientes de investigación o cierre",
+            "url": "/admin/qms/desviacion/",
+        },
+        {
+            "codigo": "QMS",
+            "titulo": "CAPA en seguimiento",
+            "valor": CAPA.objects.exclude(estado="CERRADA").filter(activo=True).count(),
+            "detalle": "Acciones correctivas/preventivas gestionadas desde Calidad",
+            "url": "/admin/qms/capa/",
+        },
+        {
+            "codigo": "BPA",
+            "titulo": "Lotes BPA controlados",
+            "valor": LoteBPA.objects.filter(activo=True).count(),
+            "detalle": "Lotes registrados con finalidad regulatoria BPA",
+            "url": "/admin/bpa/lotebpa/",
+        },
+        {
+            "codigo": "BPFV",
+            "titulo": "Casos BPFV abiertos",
+            "valor": CasoFarmacovigilancia.objects.exclude(estado="CERRADO").filter(activo=True).count(),
+            "detalle": "Casos de farmacovigilancia en gestión",
+            "url": "/admin/bpfv/casofarmacovigilancia/",
+        },
+    ]
+
+    workstreams = [
+        {
+            "codigo": "QMS",
+            "titulo": "Calidad y CAPA",
+            "descripcion": "Gestionar documentos, registros sanitarios, desviaciones y CAPA centralizadas.",
+            "registros": [
+                f"{RegistroSanitario.objects.filter(activo=True).count()} registros sanitarios",
+                f"{Desviacion.objects.exclude(estado='CERRADA').filter(activo=True).count()} desviaciones abiertas",
+                f"{CAPA.objects.exclude(estado='CERRADA').filter(activo=True).count()} CAPA en proceso",
+            ],
+            "url": "/admin/qms/",
+        },
+        {
+            "codigo": "BPA",
+            "titulo": "Almacenamiento regulatorio",
+            "descripcion": "Controlar lotes BPA, excursiones, evidencias y estados regulatorios de almacenamiento.",
+            "registros": [
+                f"{LoteBPA.objects.filter(activo=True).count()} lotes BPA",
+                f"{ExcursionBPA.objects.filter(activo=True).count()} excursiones BPA",
+            ],
+            "url": "/admin/bpa/",
+        },
+        {
+            "codigo": "BPDT",
+            "titulo": "Distribución y transporte regulatorio",
+            "descripcion": "Supervisar transportistas, vehículos autorizados e incidentes con impacto en calidad.",
+            "registros": [
+                f"{Transportista.objects.filter(autorizado=True, activo=True).count()} transportistas autorizados",
+                f"{VehiculoAutorizado.objects.filter(autorizado=True, activo=True).count()} vehículos autorizados",
+                f"{IncidenteTransporte.objects.filter(activo=True).count()} incidentes BPDT",
+            ],
+            "url": "/admin/bpdt/",
+        },
+        {
+            "codigo": "BPFV",
+            "titulo": "Farmacovigilancia",
+            "descripcion": "Registrar casos, seguimiento, gravedad, causalidad y consulta de lotes BPA vinculados.",
+            "registros": [
+                f"{CasoFarmacovigilancia.objects.exclude(estado='CERRADO').filter(activo=True).count()} casos abiertos",
+                f"{CasoFarmacovigilancia.objects.filter(lote_no_encontrado_bpa=True, activo=True).count()} casos con lote no encontrado en BPA",
+            ],
+            "url": "/admin/bpfv/",
+        },
+    ]
+
+    return render(
+        request,
+        "core/panel.html",
+        {
+            "empresa": empresa,
+            "licencias": licencias,
+            "resumen": resumen,
+            "workstreams": workstreams,
         },
     )
 
