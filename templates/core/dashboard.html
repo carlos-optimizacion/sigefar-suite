@@ -6,18 +6,18 @@
 <section class="hero">
     <div>
         <p class="eyebrow">Sistema Integral de Gestión de Calidad, Buenas Prácticas y Farmacovigilancia</p>
-        <h2>Plataforma modular para cumplimiento regulatorio y trazabilidad.</h2>
-        <p class="hero-text">Core sostiene la suite, QMS gobierna calidad y CAPA, BPA controla almacenamiento regulatorio, BPDT controla transporte regulatorio y BPFV gestiona farmacovigilancia.</p>
+        <h2>Plataforma modular de cumplimiento regulatorio y evidencia.</h2>
+        <p class="hero-text">SIGEFAR Suite se organiza en cinco módulos principales: Core, Calidad/QMS, BPA, BPDT y BPFV. Cada módulo tiene un alcance regulatorio definido para evitar duplicidades y mantener CAPA, documentos y trazabilidad bajo gobierno correcto.</p>
         <div class="actions">
-            <a class="btn primary" href="/admin/">Ingresar al admin</a>
-            <a class="btn secondary" href="/admin/core/producto/">Ver productos</a>
+            <a class="btn primary" href="#modulos">Ver módulos</a>
+            <a class="btn secondary" href="/admin/">Administración interna</a>
         </div>
     </div>
     <div class="hero-card">
         <span class="status-dot"></span>
-        <p>Arquitectura activa</p>
-        <strong>Monolito modular validable</strong>
-        <small>Django · SQLite local · PostgreSQL productivo</small>
+        <p>Gobierno funcional</p>
+        <strong>Core sostiene. QMS gobierna. BPA, BPDT y BPFV ejecutan.</strong>
+        <small>Diseñado para cumplimiento, evidencia y auditoría regulatoria.</small>
     </div>
 </section>
 
@@ -30,17 +30,17 @@
     {% endfor %}
 </section>
 
-<section class="section-header">
+<section class="section-header" id="modulos">
     <div>
-        <p class="eyebrow">Mapa funcional</p>
-        <h3>Módulos SIGEFAR Suite</h3>
+        <p class="eyebrow">Arquitectura funcional</p>
+        <h3>Módulos principales de SIGEFAR Suite</h3>
     </div>
-    <span class="pill">Gobierno centralizado</span>
+    <span class="pill">Sin ERP · Sin WMS · Sin TMS</span>
 </section>
 
 <section class="module-grid">
     {% for modulo in modulos %}
-    <article class="module-card">
+    <article class="module-card module-card-wide">
         <div class="module-icon">{{ modulo.icono }}</div>
         <div class="module-content">
             <div class="module-topline">
@@ -49,6 +49,11 @@
             </div>
             <h4>{{ modulo.nombre }}</h4>
             <p>{{ modulo.descripcion }}</p>
+            <ul class="module-list">
+                {% for componente in modulo.componentes %}
+                <li>{{ componente }}</li>
+                {% endfor %}
+            </ul>
         </div>
     </article>
     {% endfor %}
