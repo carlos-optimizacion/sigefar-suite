@@ -18,16 +18,23 @@
                 </div>
             </div>
             <nav class="nav">
-                <a class="nav-item active" href="/">Dashboard</a>
-                <a class="nav-item" href="/admin/core/producto/">Productos</a>
-                <a class="nav-item" href="/admin/qms/documentocontrolado/">Documentos QMS</a>
-                <a class="nav-item" href="/admin/bpa/lotebpa/">Lotes BPA</a>
-                <a class="nav-item" href="/admin/bpfv/casofarmacovigilancia/">BPFV</a>
-                <a class="nav-item" href="/admin/">Admin Django</a>
+                <span class="nav-label">Plataforma</span>
+                <a class="nav-item active" href="/">Dashboard general</a>
+
+                <span class="nav-label">Módulos principales</span>
+                <a class="nav-item" href="/admin/core/">SIGEFAR-Core</a>
+                <a class="nav-item" href="/admin/qms/">SIGEFAR-QMS / Calidad</a>
+                <a class="nav-item" href="/admin/bpa/">SIGEFAR-BPA</a>
+                <a class="nav-item" href="/admin/bpdt/">SIGEFAR-BPDT</a>
+                <a class="nav-item" href="/admin/bpfv/">SIGEFAR-BPFV</a>
+
+                <span class="nav-label">Control transversal</span>
+                <a class="nav-item" href="/admin/auditoria/">Auditoría</a>
+                <a class="nav-item" href="/admin/">Admin técnico</a>
             </nav>
             <div class="sidebar-footer">
-                <span>Monolito modular</span>
-                <strong>Django + PostgreSQL</strong>
+                <span>Gobierno modular</span>
+                <strong>Core + Calidad + BPA + BPDT + BPFV</strong>
             </div>
         </aside>
         <main class="main">
