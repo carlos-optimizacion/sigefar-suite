@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard | SIGEFAR Suite{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div>
+        <p class="eyebrow">Sistema Integral de Gestión de Calidad, Buenas Prácticas y Farmacovigilancia</p>
+        <h2>Plataforma modular para cumplimiento regulatorio y trazabilidad.</h2>
+        <p class="hero-text">Core sostiene la suite, QMS gobierna calidad y CAPA, BPA controla almacenamiento regulatorio, BPDT controla transporte regulatorio y BPFV gestiona farmacovigilancia.</p>
+        <div class="actions">
+            <a class="btn primary" href="/admin/">Ingresar al admin</a>
+            <a class="btn secondary" href="/admin/core/producto/">Ver productos</a>
+        </div>
+    </div>
+    <div class="hero-card">
+        <span class="status-dot"></span>
+        <p>Arquitectura activa</p>
+        <strong>Monolito modular validable</strong>
+        <small>Django · SQLite local · PostgreSQL productivo</small>
+    </div>
+</section>
+
+<section class="metrics">
+    {% for indicador in indicadores %}
+    <article class="metric-card">
+        <strong>{{ indicador.valor }}</strong>
+        <span>{{ indicador.etiqueta }}</span>
+    </article>
+    {% endfor %}
+</section>
+
+<section class="section-header">
+    <div>
+        <p class="eyebrow">Mapa funcional</p>
+        <h3>Módulos SIGEFAR Suite</h3>
+    </div>
+    <span class="pill">Gobierno centralizado</span>
+</section>
+
+<section class="module-grid">
+    {% for modulo in modulos %}
+    <article class="module-card">
+        <div class="module-icon">{{ modulo.icono }}</div>
+        <div class="module-content">
+            <div class="module-topline">
+                <span>{{ modulo.codigo }}</span>
+                <em>{{ modulo.estado }}</em>
+            </div>
+            <h4>{{ modulo.nombre }}</h4>
+            <p>{{ modulo.descripcion }}</p>
+        </div>
+    </article>
+    {% endfor %}
+</section>
+{% endblock %}
