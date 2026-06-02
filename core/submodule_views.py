@@ -25,6 +25,18 @@ def module_detail_with_submodules(request, slug):
     )
 
 
+def submodule_index(request, module_slug):
+    module = get_module(module_slug)
+    return render(
+        request,
+        "core/submodule_index.html",
+        {
+            "module": module,
+            "submodules": SUBMODULES.get(module["slug"], []),
+        },
+    )
+
+
 def submodule_detail(request, module_slug, submodule_slug):
     module = get_module(module_slug)
     submodules = SUBMODULES.get(module["slug"], [])
