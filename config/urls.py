@@ -3,10 +3,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from core.views import dashboard
+from core.views import home, module_detail
 
 urlpatterns = [
-    path('', dashboard, name='dashboard'),
+    path('', home, name='home'),
+    path('modulos/<slug:slug>/', module_detail, name='module_detail'),
     path('admin/', admin.site.urls),
 ]
 
