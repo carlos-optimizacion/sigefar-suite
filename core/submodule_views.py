@@ -11,6 +11,20 @@ def get_module(module_slug):
     return selected_module
 
 
+def module_detail_with_submodules(request, slug):
+    module = get_module(slug)
+    related_modules = [item for item in MODULES if item["slug"] != module["slug"]]
+    return render(
+        request,
+        "core/module_detail.html",
+        {
+            "module": module,
+            "related_modules": related_modules,
+            "submodules": SUBMODULES.get(module["slug"], []),
+        },
+    )
+
+
 def submodule_detail(request, module_slug, submodule_slug):
     module = get_module(module_slug)
     submodules = SUBMODULES.get(module["slug"], [])
