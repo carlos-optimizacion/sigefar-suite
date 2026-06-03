@@ -1,7 +1,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import ArchivoAdjunto, Empresa, LicenciaModulo, ModuloSistema, Notificacion, ParametroGeneral, Producto, Usuario
+from .models import (
+    ArchivoAdjunto,
+    AsignacionRolUsuario,
+    BitacoraAccion,
+    Cargo,
+    Empresa,
+    LicenciaModulo,
+    ModuloSistema,
+    Notificacion,
+    ParametroGeneral,
+    Producto,
+    RolFuncional,
+    Usuario,
+)
 
 
 class CoreAdminBase(admin.ModelAdmin):
@@ -19,15 +32,29 @@ class CoreAdminBase(admin.ModelAdmin):
     inactivar.short_description = "Inactivar registros seleccionados"
 
 
+class AsignacionRolInline(admin.TabularInline):
+    model = AsignacionRolUsuario
+    fk_name = "usuario"
+    extra = 0
+    fields = ("rol", "fecha_inicio", "fecha_fin", "activo")
+
+
 @admin.register(Usuario)
 class UsuarioAdmin(UserAdmin):
-    fieldsets = UserAdmin.fieldsets + (
-        ("SIGEFAR Core", {"fields": ("empresa", "cargo", "telefono")}),
-    )
-    list_display = ("username", "email", "first_name", "last_name", "empresa", "cargo", "is_staff", "is_active")
-    search_fields = ("username", "email", "first_name", "last_name", "empresa__razon_social")
-    list_filter = ("is_active", "is_staff", "is_superuser", "empresa")
-    list_select_related = ("empresa",)
+    fieldsets = UserAdmin.fieldsets + (("SIGEFAR Core", {"fields": ("empresa", "cargo", "cargo_funcional", "telefono")}),)
+    list_display = ("username", "email", "first_name", "last_name", "empresa", "cargo_funcional", "is_staff", "is_active")
+    search_fields = ("username", "email", "first_name", "last_name", "empresa__razon_social", "cargo_funcional__nombre")
+    list_filter = ("is_active", "is_staff", "is_superuser", "empresa", "cargo_funcional")
+    list_select_related = ("empresa", "cargo_funcional")
+    inlines = (AsignacionRolInline,)
+
+
+@admin.register(Cargo)
+class CargoAdmin(CoreAdminBase):
+    list_display = ("nombre", "nivel", "activo")
+    search_fields = ("nombre", "descripcion", "nivel")
+    list_filter = ("nivel", "activo")
+    actions = ("activar", "inactivar")
 
 
 @admin.register(Empresa)
@@ -35,13 +62,7 @@ class EmpresaAdmin(CoreAdminBase):
     list_display = ("ruc", "razon_social", "nombre_comercial", "pais", "activo", "creado_en")
     search_fields = ("ruc", "razon_social", "nombre_comercial")
     list_filter = ("activo", "pais")
-    ordering = ("razon_social",)
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Identificación", {"fields": ("ruc", "razon_social", "nombre_comercial")}),
-        ("Ubicación", {"fields": ("direccion", "pais")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
 
 
 @admin.register(ModuloSistema)
@@ -49,42 +70,42 @@ class ModuloSistemaAdmin(CoreAdminBase):
     list_display = ("codigo", "nombre", "obligatorio", "activo")
     search_fields = ("codigo", "nombre", "descripcion")
     list_filter = ("obligatorio", "activo")
-    ordering = ("codigo",)
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Módulo", {"fields": ("codigo", "nombre", "descripcion")}),
-        ("Gobierno", {"fields": ("obligatorio", "activo", "creado_en", "actualizado_en")}),
-    )
+
+
+@admin.register(RolFuncional)
+class RolFuncionalAdmin(CoreAdminBase):
+    list_display = ("modulo", "nombre", "nivel", "puede_ver", "puede_crear", "puede_editar", "puede_aprobar", "puede_cerrar", "puede_exportar", "activo")
+    search_fields = ("nombre", "descripcion", "modulo__codigo", "modulo__nombre")
+    list_filter = ("modulo", "nivel", "activo", "puede_ver", "puede_crear", "puede_editar", "puede_aprobar", "puede_cerrar", "puede_exportar")
+    list_select_related = ("modulo",)
+    actions = ("activar", "inactivar")
+
+
+@admin.register(AsignacionRolUsuario)
+class AsignacionRolUsuarioAdmin(CoreAdminBase):
+    list_display = ("usuario", "rol", "fecha_inicio", "fecha_fin", "activo")
+    search_fields = ("usuario__username", "usuario__email", "rol__nombre", "rol__modulo__codigo")
+    list_filter = ("rol__modulo", "rol__nivel", "activo")
+    list_select_related = ("usuario", "rol", "rol__modulo", "asignado_por")
+    actions = ("activar", "inactivar")
 
 
 @admin.register(LicenciaModulo)
 class LicenciaModuloAdmin(CoreAdminBase):
     list_display = ("empresa", "modulo", "fecha_inicio", "fecha_fin", "habilitado", "activo")
+    search_fields = ("empresa__razon_social", "empresa__ruc", "modulo__codigo", "modulo__nombre", "clave_local")
     list_filter = ("habilitado", "activo", "modulo")
-    search_fields = ("empresa__razon_social", "empresa__ruc", "modulo__codigo", "modulo__nombre")
     list_select_related = ("empresa", "modulo")
-    ordering = ("empresa__razon_social", "modulo__codigo")
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Licencia", {"fields": ("empresa", "modulo", "habilitado")}),
-        ("Vigencia", {"fields": ("fecha_inicio", "fecha_fin")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
 
 
 @admin.register(Producto)
 class ProductoAdmin(CoreAdminBase):
-    list_display = ("codigo", "nombre_comercial", "principio_activo", "forma_farmaceutica", "concentracion", "titular", "estado", "activo")
-    search_fields = ("codigo", "nombre_comercial", "principio_activo", "titular", "fabricante", "pais_origen")
+    list_display = ("codigo", "nombre_comercial", "principio_activo", "forma_farmaceutica", "titular", "estado", "activo")
+    search_fields = ("codigo", "nombre_comercial", "principio_activo", "titular", "fabricante")
     list_filter = ("estado", "activo", "forma_farmaceutica", "pais_origen")
-    ordering = ("nombre_comercial", "codigo")
     actions = ("activar", "inactivar")
-    readonly_fields = CoreAdminBase.readonly_fields
-    fieldsets = (
-        ("LEGADO TRANSITORIO", {"description": "Producto de Core se conserva temporalmente por compatibilidad. El producto regulatorio oficial se crea y gobierna en SIGEFAR-Regulatorio.", "fields": ("codigo", "nombre_comercial", "estado")}),
-        ("Datos heredados", {"fields": ("principio_activo", "forma_farmaceutica", "concentracion", "presentacion", "titular", "fabricante", "pais_origen")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
 
 
 @admin.register(ArchivoAdjunto)
@@ -93,12 +114,7 @@ class ArchivoAdjuntoAdmin(CoreAdminBase):
     search_fields = ("descripcion", "modulo_origen", "subido_por__username")
     list_filter = ("modulo_origen", "activo")
     list_select_related = ("subido_por",)
-    ordering = ("-creado_en",)
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Adjunto", {"fields": ("modulo_origen", "descripcion", "archivo", "subido_por")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
 
 
 @admin.register(ParametroGeneral)
@@ -106,12 +122,7 @@ class ParametroGeneralAdmin(CoreAdminBase):
     list_display = ("clave", "descripcion", "activo", "actualizado_en")
     search_fields = ("clave", "valor", "descripcion")
     list_filter = ("activo",)
-    ordering = ("clave",)
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Parámetro", {"fields": ("clave", "valor", "descripcion")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
 
 
 @admin.register(Notificacion)
@@ -120,10 +131,14 @@ class NotificacionAdmin(CoreAdminBase):
     search_fields = ("titulo", "mensaje", "usuario__username", "usuario__email")
     list_filter = ("leida", "activo", "creado_en")
     list_select_related = ("usuario",)
-    ordering = ("-creado_en",)
     actions = ("activar", "inactivar")
-    fieldsets = (
-        ("Notificación", {"fields": ("usuario", "titulo", "mensaje")}),
-        ("Lectura", {"fields": ("leida", "fecha_lectura")}),
-        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
-    )
+
+
+@admin.register(BitacoraAccion)
+class BitacoraAccionAdmin(admin.ModelAdmin):
+    list_display = ("creado_en", "usuario", "modulo", "accion", "modelo", "objeto_id", "activo")
+    search_fields = ("usuario__username", "modulo", "accion", "modelo", "objeto_id", "resumen")
+    list_filter = ("modulo", "accion", "activo", "creado_en")
+    list_select_related = ("usuario",)
+    readonly_fields = ("creado_en", "actualizado_en")
+    ordering = ("-creado_en",)
