@@ -1,5 +1,31 @@
 VISIBLE_MODULES = [
     {
+        "slug": "core",
+        "codigo": "CORE",
+        "nombre": "SIGEFAR-Core",
+        "titulo": "Núcleo común de la plataforma",
+        "descripcion": "Administra usuarios, roles, permisos, autenticación, seguridad, bitácora, licenciamiento, productos, adjuntos, notificaciones y parámetros generales.",
+        "mensaje": "Core sostiene toda la suite y provee seguridad, trazabilidad y datos maestros compartidos para Regulatorio, Calidad, BPA, BPDT y BPFV.",
+        "etiqueta": "Núcleo común",
+        "icono": "◆",
+        "componentes": [
+            "Usuarios y perfiles",
+            "Roles y permisos",
+            "Autenticación y seguridad",
+            "Bitácora general",
+            "Maestro de productos",
+            "Licenciamiento",
+            "Adjuntos y notificaciones",
+            "Parámetros generales",
+        ],
+        "principios": [
+            "Sostiene la suite completa",
+            "No reemplaza módulos funcionales",
+            "Comparte datos maestros",
+            "Garantiza trazabilidad transversal",
+        ],
+    },
+    {
         "slug": "regulatorio",
         "codigo": "REG",
         "nombre": "SIGEFAR-Regulatorio",
@@ -134,20 +160,26 @@ VISIBLE_MODULES = [
 PRINCIPLES = [
     {"titulo": "Trazabilidad", "descripcion": "Toda acción relevante queda registrada para auditoría y revisión posterior.", "icono": "⌁"},
     {"titulo": "Control documental", "descripcion": "Los documentos críticos mantienen versión, vigencia, aprobación, historial y responsable desde Calidad.", "icono": "☷"},
-    {"titulo": "Seguridad por roles", "descripcion": "Cada usuario accede solo a funciones y registros autorizados por su perfil.", "icono": "◉"},
+    {"titulo": "Seguridad por roles", "descripcion": "Core controla identidad, acceso y permisos para que cada usuario vea solo lo autorizado.", "icono": "◉"},
     {"titulo": "Evidencia regulatoria", "descripcion": "Los registros sustentan trámites, auditorías, inspecciones y seguimiento interno.", "icono": "✓"},
 ]
 
 FLOW_STEPS = [
-    "Producto maestro en Core",
-    "Registro sanitario y trámite regulatorio",
-    "Documentos controlados por Calidad",
+    "Core sostiene usuarios, seguridad y productos",
+    "Regulatorio gestiona registros y expedientes",
+    "Calidad controla documentos y CAPA",
     "BPA / BPDT / BPFV ejecutan controles",
     "Hallazgos, incidentes o señales",
-    "Calidad gestiona CAPA y cierre eficaz",
+    "Calidad verifica eficacia y cierre",
 ]
 
 SUBMODULES = {
+    "core": [
+        {"slug": "usuarios-perfiles", "nombre": "Usuarios y perfiles", "descripcion": "Gestión de usuarios, nombres, correos, estado y perfil organizacional.", "alcance": "Permite administrar usuarios del sistema como parte del núcleo común.", "acciones": ["Crear usuario", "Editar perfil", "Activar o inactivar", "Asignar datos base"], "exclusiones": ["No reemplaza RR.HH.", "No gestiona CAPA", "No administra expedientes regulatorios"], "admin_url": "/admin/core/usuario/"},
+        {"slug": "roles-permisos", "nombre": "Roles y permisos", "descripcion": "Configuración de acceso por rol, funciones y visibilidad por módulo.", "alcance": "Define qué puede ver y hacer cada usuario.", "acciones": ["Asignar rol", "Definir permisos", "Restringir visibilidad", "Controlar acceso"], "exclusiones": ["No administra documentos QMS", "No reemplaza seguridad corporativa externa"], "admin_url": "/admin/auth/group/"},
+        {"slug": "maestro-productos", "nombre": "Maestro de productos", "descripcion": "Base maestra de productos compartida por todos los módulos.", "alcance": "Consolida código, nombre comercial, principio activo, forma farmacéutica, concentración, presentación, titular, fabricante, país y estado.", "acciones": ["Registrar producto", "Editar producto", "Consultar producto", "Activar o inactivar"], "exclusiones": ["No es maestro de lotes", "No gestiona trámites regulatorios"], "admin_url": "/admin/core/producto/"},
+        {"slug": "licenciamiento", "nombre": "Licenciamiento y parámetros", "descripcion": "Control de módulos habilitados, empresa, parámetros generales y configuración base.", "alcance": "Permite activar módulos y parametrizar la suite sin duplicar reglas funcionales.", "acciones": ["Habilitar módulo", "Configurar empresa", "Definir parámetros", "Controlar acceso por licencia"], "exclusiones": ["No vende Core como módulo separado", "No reemplaza gobierno QMS"], "admin_url": "/admin/core/licenciamodulo/"},
+    ],
     "regulatorio": [
         {"slug": "registros-sanitarios", "nombre": "Registros sanitarios", "descripcion": "Maestro regulatorio de registros sanitarios por producto, titular, fabricante, país, vigencia y estado.", "alcance": "Consolida datos regulatorios del registro sanitario sin reemplazar el maestro de productos de Core.", "acciones": ["Registrar número sanitario", "Vincular producto", "Controlar vigencia", "Consultar estado regulatorio"], "exclusiones": ["No administra documentos controlados", "No reemplaza Core", "No gestiona CAPA"], "admin_url": "/admin/qms/registrosanitario/"},
         {"slug": "inscripcion", "nombre": "Inscripción de registro", "descripcion": "Gestión del expediente nuevo para obtener un registro sanitario.", "alcance": "Controla preparación, presentación, seguimiento y resultado del trámite de inscripción.", "acciones": ["Crear expediente", "Registrar fecha de presentación", "Controlar estado", "Registrar resolución final"], "exclusiones": ["No duplica documentos QMS", "No reemplaza mesa de partes externa"], "admin_url": "/admin/qms/registrosanitario/"},
