@@ -7,12 +7,18 @@
 </div>
 {% endblock %}
 
+{% block object-tools %}{% endblock %}
+
 {% block content_title %}
 <section class="sigefar-admin-hero sigefar-admin-hero-core">
     <div>
         <p class="sigefar-admin-eyebrow">SIGEFAR-Core · Empresas</p>
         <h1>Empresas usuarias</h1>
         <p>Administra la entidad cliente, su estado operativo, modalidad de instalación, responsable del sistema y sedes base.</p>
+        <div class="sigefar-hero-actions">
+            <a href="/admin/core/empresa/add/" class="sigefar-hero-btn primary">Añadir empresa</a>
+            <a href="/modulos/core/" class="sigefar-hero-btn secondary">Volver al módulo Core</a>
+        </div>
     </div>
     <div class="sigefar-admin-hero-card">
         <span>CORE</span>
