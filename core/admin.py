@@ -39,6 +39,9 @@ class SedeEmpresaInline(admin.TabularInline):
     fields = ("codigo", "nombre", "tipo_sede", "ciudad", "responsable_contacto", "activo")
     show_change_link = True
 
+    class Media:
+        css = {"all": ("core/css/admin_empresa_core.css", "core/css/admin_empresa_select_fix.css")}
+
 
 class AsignacionRolInline(admin.TabularInline):
     model = AsignacionRolUsuario
@@ -80,7 +83,7 @@ class EmpresaAdmin(CoreAdminBase):
     )
 
     class Media:
-        css = {"all": ("core/css/admin_empresa_core.css",)}
+        css = {"all": ("core/css/admin_empresa_core.css", "core/css/admin_empresa_select_fix.css")}
 
 
 @admin.register(SedeEmpresa)
@@ -98,7 +101,7 @@ class SedeEmpresaAdmin(CoreAdminBase):
     )
 
     class Media:
-        css = {"all": ("core/css/admin_empresa_core.css",)}
+        css = {"all": ("core/css/admin_empresa_core.css", "core/css/admin_empresa_select_fix.css")}
 
 
 @admin.register(ModuloSistema)
