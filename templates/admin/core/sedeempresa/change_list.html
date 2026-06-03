@@ -1,0 +1,21 @@
+{% extends "admin/change_list.html" %}
+
+{% block content_title %}
+<section class="sigefar-admin-hero sigefar-admin-hero-core">
+    <div>
+        <p class="sigefar-admin-eyebrow">SIGEFAR-Core · Sedes</p>
+        <h1>Sedes de empresa</h1>
+        <p>Registra únicamente oficinas regulatorias y almacenes como referencias base de la empresa.</p>
+    </div>
+    <div class="sigefar-admin-hero-card">
+        <span>CORE</span>
+        <strong>Sedes</strong>
+        <small>Referencia base</small>
+    </div>
+</section>
+<section class="sigefar-admin-context-grid">
+    <article><span>01</span><strong>Oficina regulatoria</strong><p>Sede para responsables y gestión administrativa regulatoria.</p></article>
+    <article><span>02</span><strong>Almacén</strong><p>Referencia de sede; el control regulado detallado sigue en BPA.</p></article>
+    <article><span>03</span><strong>Sin duplicidad</strong><p>No reemplaza almacenes regulados, zonas ni lotes BPA.</p></article>
+</section>
+{% endblock %}
