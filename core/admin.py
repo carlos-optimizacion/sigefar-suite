@@ -79,11 +79,11 @@ class ProductoAdmin(CoreAdminBase):
     list_filter = ("estado", "activo", "forma_farmaceutica", "pais_origen")
     ordering = ("nombre_comercial", "codigo")
     actions = ("activar", "inactivar")
+    readonly_fields = CoreAdminBase.readonly_fields
     fieldsets = (
-        ("Identificación del producto", {"fields": ("codigo", "nombre_comercial", "principio_activo")}),
-        ("Características farmacéuticas", {"fields": ("forma_farmaceutica", "concentracion", "presentacion")}),
-        ("Responsables y origen", {"fields": ("titular", "fabricante", "pais_origen")}),
-        ("Control Core", {"fields": ("estado", "activo", "creado_en", "actualizado_en")}),
+        ("LEGADO TRANSITORIO", {"description": "Producto de Core se conserva temporalmente por compatibilidad. El producto regulatorio oficial se crea y gobierna en SIGEFAR-Regulatorio.", "fields": ("codigo", "nombre_comercial", "estado")}),
+        ("Datos heredados", {"fields": ("principio_activo", "forma_farmaceutica", "concentracion", "presentacion", "titular", "fabricante", "pais_origen")}),
+        ("Control", {"fields": ("activo", "creado_en", "actualizado_en")}),
     )
 
 
