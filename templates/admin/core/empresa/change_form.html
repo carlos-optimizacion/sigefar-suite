@@ -1,0 +1,22 @@
+{% extends "admin/change_form.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<section class="sigefar-admin-hero sigefar-admin-hero-core">
+    <div>
+        <p class="sigefar-admin-eyebrow">SIGEFAR-Core · Empresa</p>
+        <h1>{% if original %}{{ original.razon_social }}{% else %}Nueva empresa{% endif %}</h1>
+        <p>Configura los datos corporativos, contacto, instalación SIGEFAR y sedes base de la empresa.</p>
+    </div>
+    <div class="sigefar-admin-hero-card">
+        <span>CORE</span>
+        <strong>{% if original %}{{ original.estado_operativo }}{% else %}Alta{% endif %}</strong>
+        <small>Gestión transversal</small>
+    </div>
+</section>
+<section class="sigefar-admin-context-grid">
+    <article><span>01</span><strong>Entidad cliente</strong><p>Define la empresa sobre la que aplican usuarios y licencias.</p></article>
+    <article><span>02</span><strong>Instalación</strong><p>Permite host local, host del cliente, VPS, nube o esquema híbrido.</p></article>
+    <article><span>03</span><strong>Límite funcional</strong><p>No gestiona productos, expedientes, CAPA ni lotes.</p></article>
+</section>
+{% endblock %}
