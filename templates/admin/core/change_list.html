@@ -1,0 +1,37 @@
+{% extends "admin/change_list.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'core/css/admin_core_suite.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs sigefar-admin-breadcrumbs">
+    <a href="/">Inicio</a> &rsaquo; <a href="/modulos/core/">Core</a> &rsaquo; <strong>{{ opts.verbose_name_plural|capfirst }}</strong>
+</div>
+{% endblock %}
+
+{% block content_title %}
+<section class="sigefar-core-admin-hero">
+    <div>
+        <p class="sigefar-core-admin-eyebrow">SIGEFAR-Core · Administración transversal</p>
+        <h1>{{ opts.verbose_name_plural|capfirst }}</h1>
+        <p>Gestión del núcleo común: empresas, usuarios, cargos, roles, licencias, parámetros, adjuntos, notificaciones y bitácora.</p>
+        <div class="sigefar-core-admin-actions">
+            <a href="/modulos/core/" class="sigefar-core-admin-btn secondary">Volver al módulo Core</a>
+            <a href="/admin/" class="sigefar-core-admin-btn ghost">Volver al admin</a>
+        </div>
+    </div>
+    <div class="sigefar-core-admin-card">
+        <span>SIGEFAR</span>
+        <strong>Core</strong>
+        <small>{{ opts.verbose_name_plural|capfirst }}</small>
+    </div>
+</section>
+<section class="sigefar-core-context-grid">
+    <article><span>01</span><strong>Núcleo común</strong><p>Administra datos transversales y seguridad base.</p></article>
+    <article><span>02</span><strong>Gobierno modular</strong><p>Soporta roles, permisos, licencias y trazabilidad.</p></article>
+    <article><span>03</span><strong>Límite funcional</strong><p>No reemplaza Regulatorio, QMS, BPA, BPDT ni BPFV.</p></article>
+</section>
+{% endblock %}
