@@ -1,0 +1,37 @@
+{% extends "admin/change_form.html" %}
+{% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'core/css/admin_core_suite.css' %}">
+{% endblock %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs sigefar-admin-breadcrumbs">
+    <a href="/">Inicio</a> &rsaquo; <a href="/modulos/core/">Core</a> &rsaquo; <a href="../">{{ opts.verbose_name_plural|capfirst }}</a> &rsaquo; <strong>{% if original %}{{ original }}{% else %}Nuevo registro{% endif %}</strong>
+</div>
+{% endblock %}
+
+{% block content_title %}
+<section class="sigefar-core-admin-hero">
+    <div>
+        <p class="sigefar-core-admin-eyebrow">SIGEFAR-Core · Administración transversal</p>
+        <h1>{% if original %}{{ original }}{% else %}Nuevo {{ opts.verbose_name }}</h1>{% endif %}</h1>
+        <p>Configura este registro del núcleo común manteniendo trazabilidad, seguridad y gobierno modular.</p>
+        <div class="sigefar-core-admin-actions">
+            <a href="../" class="sigefar-core-admin-btn secondary">Volver a {{ opts.verbose_name_plural }}</a>
+            <a href="/modulos/core/" class="sigefar-core-admin-btn ghost">Volver al módulo Core</a>
+        </div>
+    </div>
+    <div class="sigefar-core-admin-card">
+        <span>SIGEFAR</span>
+        <strong>Core</strong>
+        <small>{{ opts.verbose_name|capfirst }}</small>
+    </div>
+</section>
+<section class="sigefar-core-context-grid">
+    <article><span>01</span><strong>Registro Core</strong><p>Dato transversal para operación y gobierno interno.</p></article>
+    <article><span>02</span><strong>Trazabilidad</strong><p>Control de creación, actualización y estado activo.</p></article>
+    <article><span>03</span><strong>Alcance</strong><p>Evita duplicidad con módulos funcionales especializados.</p></article>
+</section>
+{% endblock %}
