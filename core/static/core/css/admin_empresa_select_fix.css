@@ -1,0 +1,72 @@
+body.app-core.model-empresa select,
+body.app-core.model-sedeempresa select,
+body.app-core.model-empresa .form-row select,
+body.app-core.model-sedeempresa .form-row select,
+body.app-core.model-empresa .inline-group select,
+body.app-core.model-sedeempresa .inline-group select,
+body.app-core.model-empresa .actions select,
+body.app-core.model-sedeempresa .actions select{
+  height:46px!important;
+  min-height:46px!important;
+  line-height:46px!important;
+  padding:0 42px 0 14px!important;
+  font-size:15px!important;
+  font-weight:700!important;
+  color:#0f172a!important;
+  background-color:#fff!important;
+  border:1px solid #cbd5e1!important;
+  border-radius:12px!important;
+  box-sizing:border-box!important;
+  vertical-align:middle!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+body.app-core.model-empresa .form-row select,
+body.app-core.model-sedeempresa .form-row select{
+  width:min(560px,100%)!important;
+  min-width:460px!important;
+  max-width:680px!important;
+}
+body.app-core.model-empresa .inline-group select,
+body.app-core.model-sedeempresa .inline-group select{
+  width:100%!important;
+  min-width:260px!important;
+  max-width:none!important;
+}
+body.app-core.model-empresa .actions select,
+body.app-core.model-sedeempresa .actions select{
+  min-width:340px!important;
+  max-width:460px!important;
+}
+body.app-core.model-empresa select option,
+body.app-core.model-sedeempresa select option{
+  color:#0f172a!important;
+  background:#fff!important;
+  font-size:15px!important;
+  font-weight:600!important;
+  padding:10px!important;
+}
+body.app-core.model-empresa .form-row,
+body.app-core.model-sedeempresa .form-row{
+  min-height:68px!important;
+  align-items:center!important;
+}
+body.app-core.model-empresa .form-row .help,
+body.app-core.model-sedeempresa .form-row .help{
+  margin-left:204px!important;
+  color:#64748b!important;
+}
+@media(max-width:900px){
+  body.app-core.model-empresa .form-row select,
+  body.app-core.model-sedeempresa .form-row select,
+  body.app-core.model-empresa .actions select,
+  body.app-core.model-sedeempresa .actions select{
+    min-width:100%!important;
+    width:100%!important;
+    max-width:100%!important;
+  }
+  body.app-core.model-empresa .form-row .help,
+  body.app-core.model-sedeempresa .form-row .help{
+    margin-left:0!important;
+  }
+}
