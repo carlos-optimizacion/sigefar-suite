@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Inicio | SIGEFAR Suite{% endblock %}
+{% block content %}
+<section class="suite-hero">
+    <div class="suite-hero-copy">
+        <p class="eyebrow">Regulatory Tech Suite</p>
+        <h1>SIGEFAR Suite</h1>
+        <p class="suite-lead">Plataforma modular para Core, asuntos regulatorios, calidad, buenas prácticas y farmacovigilancia.</p>
+        <p class="suite-text">Core sostiene la plataforma. Regulatorio gestiona registros sanitarios y expedientes. Calidad gobierna documentos y CAPA. BPA, BPDT y BPFV ejecutan controles especializados.</p>
+        <div class="suite-actions"><a class="suite-btn primary" href="#modulos">Ver ecosistema</a><a class="suite-btn secondary" href="/login/">Ingresar</a></div>
+        <div class="suite-badges"><span>Core</span><span>Regulatorio</span><span>Calidad</span><span>BPA</span><span>BPDT</span><span>BPFV</span></div>
+    </div>
+    <div class="suite-hero-visual">
+        <div class="suite-orbit-center">SIGEFAR</div>
+        <a class="suite-node suite-node-core" href="/modulos/core/">Core</a>
+        <a class="suite-node suite-node-reg" href="/modulos/regulatorio/">Regulatorio</a>
+        <a class="suite-node suite-node-qms" href="/modulos/qms/">Calidad</a>
+        <a class="suite-node suite-node-bpa" href="/modulos/bpa/">BPA</a>
+        <a class="suite-node suite-node-bpdt" href="/modulos/bpdt/">BPDT</a>
+        <a class="suite-node suite-node-bpfv" href="/modulos/bpfv/">BPFV</a>
+    </div>
+</section>
+<section class="suite-section-head" id="modulos"><div><p class="eyebrow">Arquitectura funcional</p><h2>Core + 5 módulos funcionales</h2></div><p>Core es el núcleo común. Regulatorio, Calidad, BPA, BPDT y BPFV son módulos funcionales con alcance definido y trazabilidad compartida.</p></section>
+<section class="suite-module-grid main-five-grid">{% for modulo in modules %}<article class="suite-module-card suite-{{ modulo.slug }}"><div class="suite-module-topline"><div class="suite-module-icon">{{ modulo.icono }}</div><span>{{ modulo.codigo }}</span></div><h3>{{ modulo.nombre }}</h3><p>{{ modulo.descripcion }}</p><ul>{% for componente in modulo.componentes|slice:":5" %}<li>{{ componente }}</li>{% endfor %}</ul><a href="/modulos/{{ modulo.slug }}/">Abrir módulo</a></article>{% endfor %}</section>
+<section class="compliance-flow-premium"><div class="suite-section-head compact"><div><p class="eyebrow">Gobierno transversal</p><h2>Flujo regulatorio integrado</h2></div><p>Core sostiene usuarios, seguridad, productos y licencias. Regulatorio gestiona trámites. Calidad controla documentos y CAPA. BPA, BPDT y BPFV ejecutan controles especializados.</p></div><div class="flow-premium-grid">{% for step in flow_steps %}<div class="flow-premium-step"><span>{{ forloop.counter|stringformat:"02d" }}</span><strong>{{ step }}</strong></div>{% endfor %}</div></section>
+<section class="principles-premium"><div class="suite-section-head compact"><div><p class="eyebrow">Principios del sistema</p><h2>Base de control regulatorio</h2></div></div><div class="principles-premium-grid">{% for principle in principles %}<article><span>{{ principle.icono }}</span><h3>{{ principle.titulo }}</h3><p>{{ principle.descripcion }}</p></article>{% endfor %}</div></section>
+{% endblock %}
