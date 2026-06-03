@@ -28,9 +28,24 @@ class Empresa(ModeloBase):
         return self.razon_social
 
 
+class Cargo(ModeloBase):
+    nombre = models.CharField(max_length=120, unique=True)
+    descripcion = models.TextField(blank=True)
+    nivel = models.CharField(max_length=80, blank=True, help_text="Ejemplo: Responsable, Asistente, Revisor, Aprobador, Auditor.")
+
+    class Meta:
+        verbose_name = "Cargo"
+        verbose_name_plural = "Cargos"
+        ordering = ["nombre"]
+
+    def __str__(self):
+        return self.nombre
+
+
 class Usuario(AbstractUser):
     empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT, null=True, blank=True, related_name="usuarios")
-    cargo = models.CharField(max_length=120, blank=True)
+    cargo = models.CharField(max_length=120, blank=True, help_text="Campo heredado. Usar cargo funcional para nuevas asignaciones.")
+    cargo_funcional = models.ForeignKey(Cargo, on_delete=models.PROTECT, null=True, blank=True, related_name="usuarios")
     telefono = models.CharField(max_length=40, blank=True)
 
     class Meta:
@@ -53,12 +68,60 @@ class ModuloSistema(ModeloBase):
         return f"{self.codigo} - {self.nombre}"
 
 
+class RolFuncional(ModeloBase):
+    NIVELES = [
+        ("RESPONSABLE", "Responsable"),
+        ("ASISTENTE", "Asistente"),
+        ("REVISOR", "Revisor"),
+        ("APROBADOR", "Aprobador"),
+        ("AUDITOR", "Auditor / Consulta"),
+        ("ADMINISTRADOR", "Administrador"),
+    ]
+    modulo = models.ForeignKey(ModuloSistema, on_delete=models.PROTECT, related_name="roles_funcionales")
+    nombre = models.CharField(max_length=140)
+    nivel = models.CharField(max_length=30, choices=NIVELES, default="ASISTENTE")
+    descripcion = models.TextField(blank=True)
+    puede_ver = models.BooleanField(default=True)
+    puede_crear = models.BooleanField(default=False)
+    puede_editar = models.BooleanField(default=False)
+    puede_aprobar = models.BooleanField(default=False)
+    puede_cerrar = models.BooleanField(default=False)
+    puede_exportar = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = "Rol funcional"
+        verbose_name_plural = "Roles funcionales"
+        unique_together = [("modulo", "nombre")]
+        ordering = ["modulo__codigo", "nivel", "nombre"]
+
+    def __str__(self):
+        return f"{self.modulo.codigo} - {self.nombre}"
+
+
+class AsignacionRolUsuario(ModeloBase):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="roles_sigefar")
+    rol = models.ForeignKey(RolFuncional, on_delete=models.PROTECT, related_name="usuarios_asignados")
+    asignado_por = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True, blank=True, related_name="roles_asignados")
+    fecha_inicio = models.DateField(default=timezone.localdate)
+    fecha_fin = models.DateField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Asignación de rol"
+        verbose_name_plural = "Asignaciones de roles"
+        unique_together = [("usuario", "rol")]
+        ordering = ["usuario__username", "rol__modulo__codigo"]
+
+    def __str__(self):
+        return f"{self.usuario} - {self.rol}"
+
+
 class LicenciaModulo(ModeloBase):
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="licencias")
     modulo = models.ForeignKey(ModuloSistema, on_delete=models.PROTECT, related_name="licencias")
     fecha_inicio = models.DateField(default=timezone.localdate)
     fecha_fin = models.DateField(null=True, blank=True)
     habilitado = models.BooleanField(default=True)
+    clave_local = models.CharField(max_length=255, blank=True, help_text="Clave o referencia local para instalaciones on-premise.")
 
     class Meta:
         verbose_name = "Licencia de módulo"
@@ -83,8 +146,8 @@ class Producto(ModeloBase):
     estado = models.CharField(max_length=20, choices=ESTADOS, default="ACTIVO")
 
     class Meta:
-        verbose_name = "Producto"
-        verbose_name_plural = "Productos"
+        verbose_name = "Producto legado de Core"
+        verbose_name_plural = "Productos legados de Core"
         ordering = ["nombre_comercial"]
         indexes = [models.Index(fields=["codigo"]), models.Index(fields=["nombre_comercial"])]
 
@@ -135,3 +198,24 @@ class Notificacion(ModeloBase):
 
     def __str__(self):
         return self.titulo
+
+
+class BitacoraAccion(ModeloBase):
+    usuario = models.ForeignKey(Usuario, on_delete=models.PROTECT, null=True, blank=True, related_name="acciones_bitacora")
+    modulo = models.CharField(max_length=30)
+    accion = models.CharField(max_length=120)
+    modelo = models.CharField(max_length=120, blank=True)
+    objeto_id = models.CharField(max_length=80, blank=True)
+    resumen = models.TextField()
+    valor_anterior = models.TextField(blank=True)
+    valor_nuevo = models.TextField(blank=True)
+    ip_origen = models.GenericIPAddressField(null=True, blank=True)
+
+    class Meta:
+        verbose_name = "Bitácora de acción"
+        verbose_name_plural = "Bitácora de acciones"
+        ordering = ["-creado_en"]
+        indexes = [models.Index(fields=["modulo"]), models.Index(fields=["accion"]), models.Index(fields=["creado_en"])]
+
+    def __str__(self):
+        return f"{self.modulo} - {self.accion} - {self.creado_en:%Y-%m-%d %H:%M}"
