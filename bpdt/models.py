@@ -1,7 +1,8 @@
 from django.db import models
 
-from core.models import ModeloBase, Producto, Usuario
+from core.models import ModeloBase, Usuario
 from qms.models import Desviacion
+from regulatorio.models import ProductoRegulatorio
 
 
 class Transportista(ModeloBase):
@@ -40,7 +41,7 @@ class IncidenteTransporte(ModeloBase):
     TIPOS = [("EXCURSION", "Excursión"), ("INCIDENTE", "Incidente"), ("DEVOLUCION", "Devolución"), ("ENTREGA_FALLIDA", "Entrega fallida")]
     transportista = models.ForeignKey(Transportista, on_delete=models.PROTECT, related_name="incidentes")
     vehiculo = models.ForeignKey(VehiculoAutorizado, on_delete=models.PROTECT, null=True, blank=True, related_name="incidentes")
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, null=True, blank=True)
+    producto = models.ForeignKey(ProductoRegulatorio, on_delete=models.PROTECT, null=True, blank=True, related_name="incidentes_bpdt")
     tipo = models.CharField(max_length=30, choices=TIPOS)
     descripcion = models.TextField()
     fecha_evento = models.DateTimeField()
