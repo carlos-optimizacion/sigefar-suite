@@ -13,19 +13,85 @@ class ModeloBase(models.Model):
 
 
 class Empresa(ModeloBase):
+    TIPOS_EMPRESA = [
+        ("DROGUERIA", "Droguería"),
+        ("LABORATORIO", "Laboratorio"),
+        ("DISTRIBUIDORA", "Distribuidora"),
+        ("IMPORTADORA", "Importadora"),
+        ("TITULAR_RS", "Titular de registro sanitario"),
+        ("CONSULTORA", "Consultora regulatoria"),
+        ("OTRA", "Otra"),
+    ]
+    TIPOS_INSTALACION = [
+        ("LOCAL", "Servidor local / red interna"),
+        ("HOST_CLIENTE", "Host propio del cliente"),
+        ("VPS", "VPS privado"),
+        ("NUBE", "Nube"),
+        ("HIBRIDO", "Híbrido"),
+    ]
+    ESTADOS_OPERATIVOS = [
+        ("IMPLEMENTACION", "En implementación"),
+        ("ACTIVA", "Activa"),
+        ("SUSPENDIDA", "Suspendida"),
+        ("INACTIVA", "Inactiva"),
+    ]
+
     ruc = models.CharField(max_length=20, unique=True)
     razon_social = models.CharField(max_length=200)
     nombre_comercial = models.CharField(max_length=200, blank=True)
+    tipo_empresa = models.CharField(max_length=30, choices=TIPOS_EMPRESA, default="DROGUERIA")
+    representante_legal = models.CharField(max_length=200, blank=True)
     direccion = models.CharField(max_length=255, blank=True)
+    ciudad = models.CharField(max_length=120, blank=True)
     pais = models.CharField(max_length=100, default="Perú")
+    email_contacto = models.EmailField(blank=True)
+    telefono_contacto = models.CharField(max_length=40, blank=True)
+    responsable_sistema = models.CharField(max_length=180, blank=True)
+    tipo_instalacion = models.CharField(max_length=30, choices=TIPOS_INSTALACION, default="HOST_CLIENTE")
+    dominio_sistema = models.CharField(max_length=180, blank=True, help_text="Dominio, IP o referencia interna donde opera SIGEFAR para esta empresa.")
+    estado_operativo = models.CharField(max_length=30, choices=ESTADOS_OPERATIVOS, default="IMPLEMENTACION")
+    observaciones = models.TextField(blank=True)
 
     class Meta:
         verbose_name = "Empresa"
         verbose_name_plural = "Empresas"
         ordering = ["razon_social"]
+        indexes = [models.Index(fields=["ruc"]), models.Index(fields=["estado_operativo"]), models.Index(fields=["tipo_empresa"])]
 
     def __str__(self):
         return self.razon_social
+
+
+class SedeEmpresa(ModeloBase):
+    TIPOS_SEDE = [
+        ("ADMINISTRATIVA", "Administrativa"),
+        ("REGULATORIA", "Regulatoria"),
+        ("COMERCIAL", "Comercial"),
+        ("OPERATIVA", "Operativa no BPA"),
+        ("OTRA", "Otra"),
+    ]
+
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="sedes")
+    codigo = models.CharField(max_length=60)
+    nombre = models.CharField(max_length=180)
+    tipo_sede = models.CharField(max_length=30, choices=TIPOS_SEDE, default="ADMINISTRATIVA")
+    direccion = models.CharField(max_length=255, blank=True)
+    ciudad = models.CharField(max_length=120, blank=True)
+    pais = models.CharField(max_length=100, default="Perú")
+    responsable_contacto = models.CharField(max_length=180, blank=True)
+    email_contacto = models.EmailField(blank=True)
+    telefono_contacto = models.CharField(max_length=40, blank=True)
+    observaciones = models.TextField(blank=True, help_text="La sede de empresa no reemplaza almacenes regulados BPA.")
+
+    class Meta:
+        verbose_name = "Sede de empresa"
+        verbose_name_plural = "Sedes de empresa"
+        unique_together = [("empresa", "codigo")]
+        ordering = ["empresa__razon_social", "codigo"]
+        indexes = [models.Index(fields=["codigo"]), models.Index(fields=["tipo_sede"])]
+
+    def __str__(self):
+        return f"{self.empresa} - {self.codigo}"
 
 
 class Cargo(ModeloBase):
