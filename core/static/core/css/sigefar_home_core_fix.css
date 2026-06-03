@@ -1,0 +1,84 @@
+/* Corrección visual SIGEFAR Suite: Core visible y ecosistema completo de 6 componentes. */
+.topnav {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.topnav a[href="/modulos/core/"] {
+    color: #3730a3;
+    background: #eef2ff;
+}
+
+.brand small {
+    white-space: normal;
+}
+
+.suite-hero-visual {
+    min-height: 470px;
+}
+
+.suite-node-reg {
+    top: 180px;
+    left: 22px;
+    background: #0284c7;
+}
+
+.suite-node-core {
+    top: 42px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #4f46e5;
+}
+
+.suite-node-qms {
+    top: 180px;
+    right: 22px;
+    background: #2563eb;
+}
+
+.suite-node-bpa {
+    left: 48px;
+    bottom: 74px;
+    background: #0f766e;
+}
+
+.suite-node-bpdt {
+    right: 48px;
+    bottom: 74px;
+    background: #d97706;
+}
+
+.suite-node-bpfv {
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    background: #9333ea;
+}
+
+.suite-module-grid.main-five-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.suite-regulatorio:before {
+    background: #0284c7;
+}
+
+.suite-regulatorio .suite-module-icon {
+    background: #0284c7;
+}
+
+.suite-regulatorio li:before {
+    background: #0284c7;
+}
+
+@media (max-width: 1080px) {
+    .suite-module-grid.main-five-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 680px) {
+    .suite-module-grid.main-five-grid {
+        grid-template-columns: 1fr;
+    }
+}
