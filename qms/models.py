@@ -1,6 +1,7 @@
 from django.db import models
 
-from core.models import ModeloBase, Producto, Usuario
+from core.models import ModeloBase, Usuario
+from regulatorio.models import ProductoRegulatorio
 
 
 class DocumentoControlado(ModeloBase):
@@ -11,72 +12,47 @@ class DocumentoControlado(ModeloBase):
         ("VIGENTE", "Vigente"),
         ("OBSOLETO", "Obsoleto"),
     ]
+    TIPOS_SGI = [
+        ("MANUAL", "Manual"),
+        ("PROCEDIMIENTO", "Procedimiento"),
+        ("INSTRUCTIVO", "Instructivo"),
+        ("FORMATO", "Formato"),
+        ("REGISTRO_INTERNO", "Registro interno"),
+        ("PROGRAMA", "Programa"),
+        ("PLAN", "Plan"),
+        ("MATRIZ", "Matriz"),
+        ("POLITICA", "Política"),
+        ("OTRO_SGI", "Otro documento SGI"),
+    ]
 
     codigo = models.CharField(max_length=80, unique=True)
     titulo = models.CharField(max_length=255)
+    tipo_sgi = models.CharField(max_length=40, choices=TIPOS_SGI, default="PROCEDIMIENTO")
     version = models.CharField(max_length=30)
     estado = models.CharField(max_length=20, choices=ESTADOS, default="BORRADOR")
     responsable = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name="documentos_responsable")
     fecha_emision = models.DateField(null=True, blank=True)
     fecha_vigencia = models.DateField(null=True, blank=True)
-    archivo = models.FileField(upload_to="qms/documentos/%Y/%m/", null=True, blank=True)
+    archivo = models.FileField(upload_to="qms/documentos_sgi/%Y/%m/", null=True, blank=True)
     historial_cambios = models.TextField(blank=True)
 
     class Meta:
-        verbose_name = "Documento controlado"
-        verbose_name_plural = "Documentos controlados"
+        verbose_name = "Documento del SGI"
+        verbose_name_plural = "Documentos del SGI"
         ordering = ["codigo", "version"]
 
     def __str__(self):
         return f"{self.codigo} v{self.version} - {self.titulo}"
 
 
-class RegistroSanitario(ModeloBase):
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, related_name="registros_sanitarios")
-    numero_registro = models.CharField(max_length=120, unique=True)
-    titular = models.CharField(max_length=200)
-    fecha_emision = models.DateField(null=True, blank=True)
-    fecha_vencimiento = models.DateField(null=True, blank=True)
-    documento_controlado = models.ForeignKey(DocumentoControlado, on_delete=models.PROTECT, null=True, blank=True)
-
-    class Meta:
-        verbose_name = "Registro sanitario"
-        verbose_name_plural = "Registros sanitarios"
-        ordering = ["producto", "numero_registro"]
-
-    def __str__(self):
-        return f"{self.producto} - {self.numero_registro}"
-
-
-class DocumentoRegulatorioProducto(ModeloBase):
-    TIPOS = [
-        ("FICHA_TECNICA", "Ficha técnica"),
-        ("INSERTO", "Inserto"),
-        ("ROTULADO", "Rotulado"),
-        ("CONDICION_ALMACENAMIENTO", "Condición aprobada de almacenamiento"),
-        ("CONDICION_TRANSPORTE", "Condición aprobada de transporte"),
-    ]
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, related_name="documentos_regulatorios")
-    tipo = models.CharField(max_length=40, choices=TIPOS)
-    documento_controlado = models.ForeignKey(DocumentoControlado, on_delete=models.PROTECT)
-
-    class Meta:
-        verbose_name = "Documento regulatorio de producto"
-        verbose_name_plural = "Documentos regulatorios de producto"
-        unique_together = [("producto", "tipo", "documento_controlado")]
-
-    def __str__(self):
-        return f"{self.producto} - {self.tipo}"
-
-
 class Desviacion(ModeloBase):
-    ORIGENES = [("QMS", "Calidad"), ("BPA", "BPA"), ("BPDT", "BPDT"), ("BPFV", "BPFV")]
+    ORIGENES = [("QMS", "Calidad"), ("REG", "Regulatorio"), ("BPA", "BPA"), ("BPDT", "BPDT"), ("BPFV", "BPFV")]
     ESTADOS = [("ABIERTA", "Abierta"), ("INVESTIGACION", "En investigación"), ("CERRADA", "Cerrada")]
     codigo = models.CharField(max_length=80, unique=True)
     origen = models.CharField(max_length=20, choices=ORIGENES)
     titulo = models.CharField(max_length=255)
     descripcion = models.TextField()
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, null=True, blank=True)
+    producto_regulatorio = models.ForeignKey(ProductoRegulatorio, on_delete=models.PROTECT, null=True, blank=True, related_name="desviaciones_qms")
     reportado_por = models.ForeignKey(Usuario, on_delete=models.PROTECT, related_name="desviaciones_reportadas")
     estado = models.CharField(max_length=20, choices=ESTADOS, default="ABIERTA")
 
