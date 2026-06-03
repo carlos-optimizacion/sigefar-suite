@@ -64,24 +64,21 @@ class Empresa(ModeloBase):
 
 class SedeEmpresa(ModeloBase):
     TIPOS_SEDE = [
-        ("ADMINISTRATIVA", "Administrativa"),
-        ("REGULATORIA", "Regulatoria"),
-        ("COMERCIAL", "Comercial"),
-        ("OPERATIVA", "Operativa no BPA"),
-        ("OTRA", "Otra"),
+        ("OFICINA_REGULATORIA", "Oficina regulatoria"),
+        ("ALMACEN", "Almacén"),
     ]
 
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name="sedes")
     codigo = models.CharField(max_length=60)
     nombre = models.CharField(max_length=180)
-    tipo_sede = models.CharField(max_length=30, choices=TIPOS_SEDE, default="ADMINISTRATIVA")
+    tipo_sede = models.CharField(max_length=30, choices=TIPOS_SEDE, default="OFICINA_REGULATORIA")
     direccion = models.CharField(max_length=255, blank=True)
     ciudad = models.CharField(max_length=120, blank=True)
     pais = models.CharField(max_length=100, default="Perú")
     responsable_contacto = models.CharField(max_length=180, blank=True)
     email_contacto = models.EmailField(blank=True)
     telefono_contacto = models.CharField(max_length=40, blank=True)
-    observaciones = models.TextField(blank=True, help_text="La sede de empresa no reemplaza almacenes regulados BPA.")
+    observaciones = models.TextField(blank=True, help_text="En Core la sede es referencia base. El control regulado de almacenes BPA se gestiona en SIGEFAR-BPA.")
 
     class Meta:
         verbose_name = "Sede de empresa"
