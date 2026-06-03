@@ -30,4 +30,16 @@
 </div>
 {% endblock %}
 
+{% block usertools %}
+{% if has_permission %}
+<div class="sigefar-admin-userbox">
+    <span>Usuario: <strong>{{ request.user.get_username }}</strong></span>
+    <form id="logout-form" method="post" action="{% url 'admin:logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+    </form>
+</div>
+{% endif %}
+{% endblock %}
+
 {% block nav-global %}{% endblock %}
