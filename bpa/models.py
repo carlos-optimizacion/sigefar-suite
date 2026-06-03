@@ -1,7 +1,8 @@
 from django.db import models
 
-from core.models import ModeloBase, Producto, Usuario
+from core.models import ModeloBase, Usuario
 from qms.models import Desviacion
+from regulatorio.models import ProductoRegulatorio
 
 
 class AlmacenRegulado(ModeloBase):
@@ -44,7 +45,7 @@ class LoteBPA(ModeloBase):
         ("RECHAZADO", "Rechazado"),
         ("DEVUELTO", "Devuelto"),
     ]
-    producto = models.ForeignKey(Producto, on_delete=models.PROTECT, related_name="lotes_bpa")
+    producto = models.ForeignKey(ProductoRegulatorio, on_delete=models.PROTECT, related_name="lotes_bpa")
     numero_lote = models.CharField(max_length=120)
     fecha_vencimiento = models.DateField(null=True, blank=True)
     estado_regulatorio = models.CharField(max_length=30, choices=ESTADOS, default="CUARENTENA")
