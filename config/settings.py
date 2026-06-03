@@ -56,13 +56,29 @@ TEMPLATES = [
 WSGI_APPLICATION = "config.wsgi.application"
 
 DATABASE_ENGINE = os.getenv("DATABASE_ENGINE", "django.db.backends.sqlite3")
-DATABASE_NAME = os.getenv("DATABASE_NAME", str(BASE_DIR / "db.sqlite3"))
-DATABASES = {
-    "default": {
-        "ENGINE": DATABASE_ENGINE,
-        "NAME": DATABASE_NAME,
+
+if DATABASE_ENGINE == "django.db.backends.postgresql":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DATABASE_NAME", "sigefar_suite"),
+            "USER": os.getenv("DATABASE_USER", "sigefar_user"),
+            "PASSWORD": os.getenv("DATABASE_PASSWORD", ""),
+            "HOST": os.getenv("DATABASE_HOST", "127.0.0.1"),
+            "PORT": os.getenv("DATABASE_PORT", "5432"),
+            "CONN_MAX_AGE": int(os.getenv("DATABASE_CONN_MAX_AGE", "60")),
+        }
     }
-}
+    DATABASE_SSLMODE = os.getenv("DATABASE_SSLMODE", "").strip()
+    if DATABASE_SSLMODE:
+        DATABASES["default"]["OPTIONS"] = {"sslmode": DATABASE_SSLMODE}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": os.getenv("DATABASE_NAME", str(BASE_DIR / "db.sqlite3")),
+        }
+    }
 
 AUTH_USER_MODEL = "core.Usuario"
 
