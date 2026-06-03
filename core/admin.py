@@ -79,6 +79,9 @@ class EmpresaAdmin(CoreAdminBase):
         ("Control", {"fields": ("observaciones", "activo", "creado_en", "actualizado_en")}),
     )
 
+    class Media:
+        css = {"all": ("core/css/admin_empresa_core.css",)}
+
 
 @admin.register(SedeEmpresa)
 class SedeEmpresaAdmin(CoreAdminBase):
@@ -93,6 +96,9 @@ class SedeEmpresaAdmin(CoreAdminBase):
         ("Contacto", {"fields": ("responsable_contacto", "email_contacto", "telefono_contacto")}),
         ("Control", {"fields": ("observaciones", "activo", "creado_en", "actualizado_en")}),
     )
+
+    class Media:
+        css = {"all": ("core/css/admin_empresa_core.css",)}
 
 
 @admin.register(ModuloSistema)
