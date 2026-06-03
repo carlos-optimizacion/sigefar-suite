@@ -1,0 +1,22 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+
+{% block content_title %}
+<section class="sigefar-admin-hero sigefar-admin-hero-core">
+    <div>
+        <p class="sigefar-admin-eyebrow">SIGEFAR-Core · Empresas</p>
+        <h1>Empresas usuarias</h1>
+        <p>Administra la entidad cliente, su estado operativo, modalidad de instalación, responsable del sistema y sedes base.</p>
+    </div>
+    <div class="sigefar-admin-hero-card">
+        <span>CORE</span>
+        <strong>Empresa</strong>
+        <small>Núcleo transversal</small>
+    </div>
+</section>
+<section class="sigefar-admin-context-grid">
+    <article><span>01</span><strong>Alcance Core</strong><p>Empresas, usuarios, licencias, parámetros y seguridad.</p></article>
+    <article><span>02</span><strong>No regula productos</strong><p>El producto regulatorio pertenece a Regulatorio.</p></article>
+    <article><span>03</span><strong>Sedes base</strong><p>Solo oficina regulatoria y almacén como referencia de empresa.</p></article>
+</section>
+{% endblock %}
