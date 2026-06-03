@@ -1,32 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}Submódulos {{ module.codigo }} | SIGEFAR Suite{% endblock %}
 {% block content %}
-<section class="module-premium-hero module-theme-{{ module.slug }}">
-    <a class="back-link-premium" href="/modulos/{{ module.slug }}/">← Volver al módulo</a>
-    <div class="module-premium-grid">
-        <div>
-            <p class="eyebrow">Submódulos funcionales</p>
-            <h1>{{ module.codigo }}</h1>
-            <p class="module-premium-lead">Herramientas internas de {{ module.nombre }}</p>
-            <p class="module-premium-text">Cada herramienta mantiene alcance regulatorio definido para evitar duplicidad con Core, QMS y otros módulos de SIGEFAR Suite.</p>
-        </div>
-        <div class="module-premium-emblem">
-            <span>{{ module.icono }}</span>
-            <strong>{{ module.codigo }}</strong>
-        </div>
-    </div>
-</section>
-
-<section class="submodule-section">
-    <div class="submodule-grid">
-        {% for submodule in submodules %}
-        <a class="submodule-card module-theme-border-{{ module.slug }}" href="/modulos/{{ module.slug }}/{{ submodule.slug }}/">
-            <span>{{ forloop.counter|stringformat:"02d" }}</span>
-            <h3>{{ submodule.nombre }}</h3>
-            <p>{{ submodule.descripcion }}</p>
-            <strong>Abrir herramienta</strong>
-        </a>
-        {% endfor %}
-    </div>
-</section>
+<section class="module-premium-hero module-theme-{{ module.slug }} compact-module-hero"><a class="back-link-premium" href="/modulos/{{ module.slug }}/">← Volver al módulo</a><div class="module-premium-grid"><div><p class="eyebrow">Submódulos funcionales</p><h1>{{ module.codigo }}</h1><p class="module-premium-lead">Herramientas internas de {{ module.nombre }}</p><p class="module-premium-text">Vista funcional con alcance, límites y trazabilidad por proceso.</p></div><div class="module-premium-emblem"><span>{{ module.icono }}</span><strong>{{ module.codigo }}</strong></div></div></section>
+<section class="submodule-section premium-horizontal-section"><div class="suite-section-head compact"><div><p class="eyebrow">Mapa funcional</p><h2>Submódulos de {{ module.codigo }}</h2></div><p>Tarjetas horizontales para explicar qué hace cada submódulo y evitar duplicidades.</p></div><div class="submodule-horizontal-list">{% for submodule in submodules %}<article class="submodule-horizontal-card suite-{{ module.slug }}"><div class="submodule-number">{{ forloop.counter|stringformat:"02d" }}</div><div class="submodule-main"><h3>{{ submodule.nombre }}</h3><p>{{ submodule.descripcion }}</p><div class="submodule-meta-grid"><div><span>Alcance</span><strong>{{ submodule.alcance }}</strong></div><div><span>Acciones</span><strong>{% for accion in submodule.acciones|slice:":3" %}{{ accion }}{% if not forloop.last %} · {% endif %}{% endfor %}</strong></div><div><span>Límites</span><strong>{% for exclusion in submodule.exclusiones|slice:":2" %}{{ exclusion }}{% if not forloop.last %} · {% endif %}{% endfor %}</strong></div></div></div><div class="submodule-actions-box"><a href="/modulos/{{ module.slug }}/{{ submodule.slug }}/">Ver detalle</a></div></article>{% empty %}<article class="submodule-horizontal-card suite-{{ module.slug }}"><div class="submodule-number">00</div><div class="submodule-main"><h3>Submódulos en definición</h3><p>Este módulo aún no tiene herramientas internas activadas en el catálogo visual.</p></div></article>{% endfor %}</div></section>
 {% endblock %}
