@@ -1,0 +1,33 @@
+{% extends "admin/base.html" %}
+{% load static i18n %}
+
+{% block title %}{% if subtitle %}{{ subtitle }} | {% endif %}{{ title }} | SIGEFAR Suite{% endblock %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'core/css/admin_sigefar_base.css' %}">
+{% endblock %}
+
+{% block branding %}
+<div class="sigefar-admin-topbrand">
+    <a class="sigefar-admin-logo" href="/" title="Volver al inicio SIGEFAR">
+        <span class="sigefar-admin-mark">S</span>
+        <span>
+            <strong>SIGEFAR Suite</strong>
+            <small>Core · Regulatorio · Calidad · BPA · BPDT · BPFV</small>
+        </span>
+    </a>
+    <nav class="sigefar-admin-nav" aria-label="Navegación SIGEFAR">
+        <a href="/">Inicio</a>
+        <a href="/modulos/core/">Core</a>
+        <a href="/modulos/regulatorio/">Regulatorio</a>
+        <a href="/modulos/qms/">Calidad</a>
+        <a href="/modulos/bpa/">BPA</a>
+        <a href="/modulos/bpdt/">BPDT</a>
+        <a href="/modulos/bpfv/">BPFV</a>
+        <a href="/admin/" class="admin-current">Admin</a>
+    </nav>
+</div>
+{% endblock %}
+
+{% block nav-global %}{% endblock %}
