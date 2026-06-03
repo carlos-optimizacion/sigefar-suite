@@ -13,6 +13,7 @@ from .models import (
     ParametroGeneral,
     Producto,
     RolFuncional,
+    SedeEmpresa,
     Usuario,
 )
 
@@ -30,6 +31,13 @@ class CoreAdminBase(admin.ModelAdmin):
         queryset.update(activo=False)
 
     inactivar.short_description = "Inactivar registros seleccionados"
+
+
+class SedeEmpresaInline(admin.TabularInline):
+    model = SedeEmpresa
+    extra = 0
+    fields = ("codigo", "nombre", "tipo_sede", "ciudad", "responsable_contacto", "activo")
+    show_change_link = True
 
 
 class AsignacionRolInline(admin.TabularInline):
@@ -59,10 +67,32 @@ class CargoAdmin(CoreAdminBase):
 
 @admin.register(Empresa)
 class EmpresaAdmin(CoreAdminBase):
-    list_display = ("ruc", "razon_social", "nombre_comercial", "pais", "activo", "creado_en")
-    search_fields = ("ruc", "razon_social", "nombre_comercial")
-    list_filter = ("activo", "pais")
+    list_display = ("ruc", "razon_social", "tipo_empresa", "estado_operativo", "tipo_instalacion", "responsable_sistema", "activo")
+    search_fields = ("ruc", "razon_social", "nombre_comercial", "representante_legal", "responsable_sistema", "email_contacto")
+    list_filter = ("tipo_empresa", "estado_operativo", "tipo_instalacion", "activo", "pais")
     actions = ("activar", "inactivar")
+    inlines = (SedeEmpresaInline,)
+    fieldsets = (
+        ("Identificación", {"fields": ("ruc", "razon_social", "nombre_comercial", "tipo_empresa", "representante_legal")}),
+        ("Ubicación y contacto", {"fields": ("direccion", "ciudad", "pais", "email_contacto", "telefono_contacto", "responsable_sistema")}),
+        ("Instalación SIGEFAR", {"fields": ("tipo_instalacion", "dominio_sistema", "estado_operativo")}),
+        ("Control", {"fields": ("observaciones", "activo", "creado_en", "actualizado_en")}),
+    )
+
+
+@admin.register(SedeEmpresa)
+class SedeEmpresaAdmin(CoreAdminBase):
+    list_display = ("empresa", "codigo", "nombre", "tipo_sede", "ciudad", "responsable_contacto", "activo")
+    search_fields = ("empresa__razon_social", "empresa__ruc", "codigo", "nombre", "responsable_contacto", "email_contacto")
+    list_filter = ("tipo_sede", "activo", "pais")
+    list_select_related = ("empresa",)
+    actions = ("activar", "inactivar")
+    fieldsets = (
+        ("Empresa y sede", {"fields": ("empresa", "codigo", "nombre", "tipo_sede")}),
+        ("Ubicación", {"fields": ("direccion", "ciudad", "pais")}),
+        ("Contacto", {"fields": ("responsable_contacto", "email_contacto", "telefono_contacto")}),
+        ("Control", {"fields": ("observaciones", "activo", "creado_en", "actualizado_en")}),
+    )
 
 
 @admin.register(ModuloSistema)
