@@ -26,7 +26,15 @@
             <a href="/modulos/bpdt/">BPDT</a>
             <a href="/modulos/bpfv/">BPFV</a>
         </nav>
-        <a class="access-link" href="/panel/">Ingresar al sistema</a>
+        {% if request.user.is_authenticated %}
+        <div class="user-session-pill">
+            <span>{{ request.user.get_full_name|default:request.user.username }}</span>
+            <small>{{ request.user.username }}</small>
+            <a href="/logout/">Salir</a>
+        </div>
+        {% else %}
+        <a class="access-link" href="/login/">Ingresar al sistema</a>
+        {% endif %}
     </header>
 
     <main class="site-main">
