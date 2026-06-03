@@ -1,6 +1,12 @@
 {% extends "admin/change_form.html" %}
 {% load i18n %}
 
+{% block breadcrumbs %}
+<div class="breadcrumbs sigefar-admin-breadcrumbs">
+    <a href="/">Inicio</a> › <a href="/modulos/core/">Core</a> › <a href="/admin/core/empresa/">Empresas</a> › <strong>{% if original %}{{ original.razon_social }}{% else %}Nueva empresa{% endif %}</strong>
+</div>
+{% endblock %}
+
 {% block content_title %}
 <section class="sigefar-admin-hero sigefar-admin-hero-core">
     <div>
