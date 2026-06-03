@@ -1,8 +1,9 @@
 from django.db import models
 
 from bpa.models import LoteBPA
-from core.models import ModeloBase, Producto, Usuario
+from core.models import ModeloBase, Usuario
 from qms.models import Desviacion
+from regulatorio.models import ProductoRegulatorio
 
 
 class CasoFarmacovigilancia(ModeloBase):
@@ -18,7 +19,7 @@ class CasoFarmacovigilancia(ModeloBase):
 
     codigo = models.CharField(max_length=80, unique=True)
     tipo_evento = models.CharField(max_length=40, choices=TIPOS_EVENTO)
-    producto_sospechoso = models.ForeignKey(Producto, on_delete=models.PROTECT, related_name="casos_bpfv")
+    producto_sospechoso = models.ForeignKey(ProductoRegulatorio, on_delete=models.PROTECT, related_name="casos_bpfv")
     numero_lote_reportado = models.CharField(max_length=120, blank=True)
     fecha_vencimiento_reportada = models.DateField(null=True, blank=True)
     lote_bpa_vinculado = models.ForeignKey(LoteBPA, on_delete=models.PROTECT, null=True, blank=True, related_name="casos_bpfv")
